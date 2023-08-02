@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RetroWars.Common\RetroWars.Common.csproj" />
+    <ProjectReference Include="..\RetroWars.Data.Models\RetroWars.Data.Models.csproj" />
+    <ProjectReference Include="..\RetroWars.Data\RetroWars.Data.csproj" />
+    <ProjectReference Include="..\RetroWars.Services.Mapping\RetroWars.Services.Mapping.csproj" />
+    <ProjectReference Include="..\RetroWars.Services.Models\RetroWars.Services.Data.Models.csproj" />
+    <ProjectReference Include="..\RetroWars.Web.ViewModels\RetroWars.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
