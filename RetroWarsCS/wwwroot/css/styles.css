@@ -1,0 +1,10 @@
+﻿@font-face {
+    font-family: old;
+    src: url(old.ttf);
+}
+
+body {
+    height: 100vh;
+    font-family: old;
+    
+}
