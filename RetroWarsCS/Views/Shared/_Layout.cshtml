@@ -1,9 +1,16 @@
-﻿<!DOCTYPE html>
+﻿
+@{
+    int ReleaseYear = 2023;
+}
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RetroWarsCS</title>
+    <title>@ViewData["Title"] - RetroWars</title>
+    <link rel="icon" type="image/x-icon" href="~/icon.png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
@@ -22,9 +29,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -39,7 +43,11 @@
 
     <footer class="footer text-muted">
         <div class="container mb-5">
-            &copy; 2023 - RetroWarsCS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; RetroWars @ReleaseYear
+            @if (DateTime.UtcNow.Year != ReleaseYear)
+            {
+                @Html.Raw($" - {DateTime.UtcNow.Year}")
+            } 
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

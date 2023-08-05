@@ -1,0 +1,70 @@
+﻿@model RegisterFormModel
+
+@{
+    ViewData["Title"] = "Register Page";
+}
+
+<form method="post" class="vh-100 gradient-custom">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-md-5 mt-md-4 pb-5">
+
+                            <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+                            <p class="text-white-50 mb-5">Please enter your login and password!</p>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="Email" type="email" id="typeEmailX" class="form-control form-control-lg"/>
+                                <label asp-for="Email" class="form-label" for="typeEmailX">Email</label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="FirstName" type="text" id="typeFirstNameX" class="form-control form-control-lg"/>
+                                <label asp-for="FirstName"class="form-label" for="typeFirstNameX">First Name</label>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="LastName" type="text" id="typeLastNameX" class="form-control form-control-lg" />
+                                <label asp-for="LastName" class="form-label" for="typeLastNameX">Last Name</label>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="Password" type="password" id="typePasswordX" class="form-control form-control-lg"/>
+                                <label asp-for="Password"class="form-label" for="typePasswordX">Password</label>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="ConfirmPassword" type="password" id="typeRepeatPasswordX" class="form-control form-control-lg"/>
+                                <label asp-for="ConfirmPassword" class="form-label" for="typeRepeatPasswordX">Repeat Password</label>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-outline-light btn-lg px-5" type="submit">Register</button>
+
+                        </div>
+
+                        <div>
+                            <p class="mb-0">
+                                Already have an account? <a asp-controller="User" asp-action="Login" class="text-white-50 fw-bold">Sign In</a>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

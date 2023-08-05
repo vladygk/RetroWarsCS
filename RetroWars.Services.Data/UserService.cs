@@ -13,11 +13,22 @@ public class UserService : IUserService
     {
         this.applicationUserRepository = applicationUserRepository;
     }
-
-
-    public async Task<string> GetFullNameByIdAsync(Guid userId)
+    public async Task<string> GetFullNameByEmailAsync(string email)
     {
-        ApplicationUser? user = await this.applicationUserRepository.GetOneAsync(userId);
+        ApplicationUser? user = await this.applicationUserRepository
+            .GetOneAsync(email,true);
+
+        if (user == null)
+        {
+            return string.Empty;
+        }
+
+        return $"{user.FirstName} {user.LastName}";
+    }
+
+    public async Task<string> GetFullNameByIdAsync(string userId)
+    {
+        ApplicationUser? user = await this.applicationUserRepository.GetOneAsync(userId, false);
         if (user == null)
         {
             return string.Empty;

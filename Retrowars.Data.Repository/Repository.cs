@@ -19,9 +19,28 @@ namespace Retrowars.Data.Repository
             return await currentSet.ToListAsync();
         }
 
-        public async Task<T?> GetOneAsync(Guid id)
+        public async Task<T?> GetOneAsync(string id, bool isEmail)
         {
-           return await this.currentSet.FirstOrDefaultAsync(x => x.Id == id);
+            if (isEmail)
+            {
+                foreach (var entity in this.currentSet)
+                {
+                    string email = this.GetEmail(entity);
+
+                    if (email == id)
+                    {
+                        return entity;
+                    }
+                }
+
+                return null;
+            }
+            return await this.currentSet.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
+        }
+
+        private string GetEmail(object obj)
+        {
+            return (string)obj.GetType().GetProperty("Email")?.GetValue(obj, null);
         }
 
         public async Task AddAsync(T entity)
@@ -41,7 +60,7 @@ namespace Retrowars.Data.Repository
             this.currentSet.Update(entity);
             return true;
         }
-    
+
 
         public async Task<bool> DeleteOneAsync(Guid id)
         {
