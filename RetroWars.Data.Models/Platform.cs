@@ -3,35 +3,35 @@
 using System.ComponentModel.DataAnnotations;
 using static RetroWars.Common.EntityValidationConstants.Platform;
 
-    public class Platform
+public class Platform
+{
+    public Platform()
     {
-        public Platform()
-        {
-            this.Games = new HashSet<Game>();
-            this.Id = Guid.NewGuid();
-        }
-        [Key]
-        public Guid Id { get; set; }
+        this.Games = new HashSet<Game>();
+        this.Id = Guid.NewGuid();
+    }
+    [Key]
+    public Guid Id { get; set; }
 
-        [Required]
+    [Required]
     [MaxLength(MaxNameLength)]
-        public string Name { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
-        [Required]
+    [Required]
     [MaxLength(MaxImageUrlLength)]
-        public string ImageUrl { get; set; } = null!;
+    public string ImageUrl { get; set; } = null!;
 
-        [Required]
+    [Required]
     [MaxLength(MaxCompanyNameLength)]
-        public string Company { get; set; } = null!;
+    public string Company { get; set; } = null!;
 
-        [Required]
-        [MaxLength(MaxDescriptionLength)]
+    [Required]
+    [MaxLength(MaxDescriptionLength)]
     public string Description { get; set; } = null!;
 
-        [Required]
-        public int YearOfRelease { get; set; }
+    [Required]
+    public int YearOfRelease { get; set; }
 
-        public virtual ICollection<Game> Games { get; set; }
-    }
+    public virtual ICollection<Game> Games { get; set; }
+}
 

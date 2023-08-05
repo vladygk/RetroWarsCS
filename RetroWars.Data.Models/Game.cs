@@ -37,7 +37,6 @@ public class Game
     public int YearOfPublishing { get; set; }
 
     [Required]
-    [ForeignKey(nameof(Genre))]
     public Guid GenreId { get; set; }
     public virtual Genre Genre { get; set; }
 
@@ -48,5 +47,7 @@ public class Game
 
     public virtual ICollection<Platform> Platforms { get; set; }
 
+    public virtual ICollection<Poll> PollsAsFirstParticipant { get; set; }
 
+    public virtual ICollection<Poll> PollsAsSecondParticipant { get; set; }
 }

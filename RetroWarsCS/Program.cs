@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RetroWarsCS.Data;
+using RetroWars.Data;
+using RetroWars.Data.Models;
 
 namespace RetroWarsCS
 {
@@ -13,13 +14,13 @@ namespace RetroWarsCS
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContext<RetroWarsDbContext>(options =>
                 options.UseSqlServer(connectionString)
                     .UseLazyLoadingProxies());
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount =
                         builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
@@ -34,7 +35,7 @@ namespace RetroWarsCS
 
                 })
                 .AddRoles<IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<RetroWarsDbContext>();
 
             builder.Services.AddControllersWithViews();
 

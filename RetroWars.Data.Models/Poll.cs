@@ -14,13 +14,14 @@ public class Poll
     public Guid Id { get; set; }
 
     [Required]
-    [ForeignKey(nameof(FirstGame))]
     public Guid FirstGameId { get; set; }
+
+    [Required]
+    public bool IsActive { get; set; }
 
     public virtual Game FirstGame { get; set; }
 
     [Required]
-    [ForeignKey(nameof(SecondGame))]
     public Guid SecondGameId { get; set; }
 
     public virtual Game SecondGame { get; set; }
