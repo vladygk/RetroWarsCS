@@ -1,9 +1,10 @@
 ﻿namespace RetroWars.Data.Models;
 
+using Retrowars.Data.Repository;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Poll
+public class Poll : IBaseEntity
 {
     public Poll()
     {

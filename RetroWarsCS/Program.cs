@@ -1,7 +1,13 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Retrowars.Data.Repository;
 using RetroWars.Data;
 using RetroWars.Data.Models;
+using RetroWars.Services.Data;
+using RetroWars.Services.Data.Contracts;
+using RetroWars.Web.Infrastructure.Extensions;
 
 namespace RetroWarsCS
 {
@@ -17,6 +23,8 @@ namespace RetroWarsCS
             builder.Services.AddDbContext<RetroWarsDbContext>(options =>
                 options.UseSqlServer(connectionString)
                     .UseLazyLoadingProxies());
+
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); //Add repository to IoC
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -37,34 +45,71 @@ namespace RetroWarsCS
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<RetroWarsDbContext>();
 
-            builder.Services.AddControllersWithViews();
+
+            builder.Services.AddApplicationServices(typeof(IUserService));
+
+            builder.Services.AddMemoryCache();
+            builder.Services.AddResponseCaching();
+
+            builder.Services.ConfigureApplicationCookie(cfg =>
+            {
+                cfg.LoginPath = "/User/Login";
+                cfg.AccessDeniedPath = "/Home/Error/401";
+            });
+
+          
+
+            builder.Services.AddControllersWithViews()
+                .AddMvcOptions(
+                opt =>
+                {
+                    opt.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+                });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+                app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseExceptionHandler("/Home/Error/500");
+                app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
+
                 app.UseHsts();
             }
+
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseResponseCaching();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-            app.MapRazorPages();
+            app.UseEndpoints(config =>
+            {
+                config.MapControllerRoute(
+                    name: "areas",
+                    pattern: "/{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
+                config.MapControllerRoute(
+                    name: "ProtectingUrlRoute",
+                    pattern: "/{controller}/{action}/{id}/{information}"
+                   // defaults: new { Controller = "Category", Action = "Details" }
+                    );
+
+                config.MapDefaultControllerRoute();
+
+                config.MapRazorPages();
+            });
 
             app.Run();
         }

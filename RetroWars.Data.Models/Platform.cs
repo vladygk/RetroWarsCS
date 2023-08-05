@@ -1,9 +1,10 @@
 ﻿namespace RetroWars.Data.Models;
 
+using Retrowars.Data.Repository;
 using System.ComponentModel.DataAnnotations;
 using static RetroWars.Common.EntityValidationConstants.Platform;
 
-public class Platform
+public class Platform : IBaseEntity
 {
     public Platform()
     {

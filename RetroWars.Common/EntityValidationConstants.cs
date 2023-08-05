@@ -33,8 +33,14 @@
 
         public static class ApplicationUser
         {
+            public const int MinFirstNameLength = 2;
             public const int MaxFirstNameLength = 50;
+
+            public const int MinLastNameLength = 2;
             public const int MaxLastNameLength = 50;
+
+            public const int MinPasswordLength = 6;
+            public const int MaxPasswordLength = 100;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace RetroWars.Services.Models
 {
-    public class Class1
+    public class UserViewModel
     {
 
     }

@@ -1,11 +1,13 @@
-﻿namespace RetroWars.Data.Models;
+﻿using Retrowars.Data.Repository;
+
+namespace RetroWars.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static RetroWars.Common.EntityValidationConstants.Game;
 
 
-public class Game
+public class Game : IBaseEntity
 {
 
     public Game()

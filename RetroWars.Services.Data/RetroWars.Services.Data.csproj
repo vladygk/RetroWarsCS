@@ -22,10 +22,14 @@
   <ItemGroup>
     <ProjectReference Include="..\RetroWars.Common\RetroWars.Common.csproj" />
     <ProjectReference Include="..\RetroWars.Data.Models\RetroWars.Data.Models.csproj" />
-    <ProjectReference Include="..\RetroWars.Data\RetroWars.Data.csproj" />
+    <ProjectReference Include="..\Retrowars.Data.Repository\Retrowars.Data.Repository.csproj" />
     <ProjectReference Include="..\RetroWars.Services.Mapping\RetroWars.Services.Mapping.csproj" />
     <ProjectReference Include="..\RetroWars.Services.Models\RetroWars.Services.Data.Models.csproj" />
     <ProjectReference Include="..\RetroWars.Web.ViewModels\RetroWars.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\" />
   </ItemGroup>
 
 </Project>

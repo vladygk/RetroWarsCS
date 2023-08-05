@@ -1,9 +1,10 @@
 ﻿namespace RetroWars.Data.Models;
 
+using Retrowars.Data.Repository;
 using System.ComponentModel.DataAnnotations;
 using static RetroWars.Common.EntityValidationConstants.Genre;
 
-public class Genre
+public class Genre : IBaseEntity
 {
 
     public Genre()
