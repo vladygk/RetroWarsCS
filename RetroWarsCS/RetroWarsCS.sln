@@ -13,23 +13,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{06
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1A4493A-752A-4881-A62B-8E10D1899D0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroWars.Data", "..\RetroWars.Data\RetroWars.Data.csproj", "{C72B82D0-A5DC-40FB-B988-DB6D48229FA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Data", "..\RetroWars.Data\RetroWars.Data.csproj", "{C72B82D0-A5DC-40FB-B988-DB6D48229FA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroWars.Data.Models", "..\RetroWars.Data.Models\RetroWars.Data.Models.csproj", "{B77AF877-26EC-4AB0-94C3-E90EF402ED1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Data.Models", "..\RetroWars.Data.Models\RetroWars.Data.Models.csproj", "{B77AF877-26EC-4AB0-94C3-E90EF402ED1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroWars.Services.Data", "..\RetroWars.Services.Data\RetroWars.Services.Data.csproj", "{50FB1A30-7155-4699-AC61-1B7C6313466A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Services.Data", "..\RetroWars.Services.Data\RetroWars.Services.Data.csproj", "{50FB1A30-7155-4699-AC61-1B7C6313466A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroWars.Services.Data.Models", "..\RetroWars.Services.Models\RetroWars.Services.Data.Models.csproj", "{92AC61FB-F1DF-437D-A441-B3D540518746}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Services.Data.Models", "..\RetroWars.Services.Models\RetroWars.Services.Data.Models.csproj", "{92AC61FB-F1DF-437D-A441-B3D540518746}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroWars.Services.Mapping", "..\RetroWars.Services.Mapping\RetroWars.Services.Mapping.csproj", "{C2FFF25E-11D2-4D14-A1C4-5137ED0DA0D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Services.Mapping", "..\RetroWars.Services.Mapping\RetroWars.Services.Mapping.csproj", "{C2FFF25E-11D2-4D14-A1C4-5137ED0DA0D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroWars.Services.Tests", "..\RetroWars.Services.Tests\RetroWars.Services.Tests.csproj", "{81F9ABCF-35BF-4D46-A279-6CCFDDDE6279}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Services.Tests", "..\RetroWars.Services.Tests\RetroWars.Services.Tests.csproj", "{81F9ABCF-35BF-4D46-A279-6CCFDDDE6279}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroWars.Web.Infrastructure", "..\RetroWars.Web.Infrastructure\RetroWars.Web.Infrastructure.csproj", "{F6B00AB1-4D0A-47E4-B32E-549F21A0B322}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Web.Infrastructure", "..\RetroWars.Web.Infrastructure\RetroWars.Web.Infrastructure.csproj", "{F6B00AB1-4D0A-47E4-B32E-549F21A0B322}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroWars.Web.ViewModels", "..\RetroWars.Web.ViewModels\RetroWars.Web.ViewModels.csproj", "{95FAF362-5530-4C0C-9B81-CAF0FE97F8C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Web.ViewModels", "..\RetroWars.Web.ViewModels\RetroWars.Web.ViewModels.csproj", "{95FAF362-5530-4C0C-9B81-CAF0FE97F8C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroWars.Common", "..\RetroWars.Common\RetroWars.Common.csproj", "{94450967-D020-42B2-B145-2B1FC47FD1E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Common", "..\RetroWars.Common\RetroWars.Common.csproj", "{94450967-D020-42B2-B145-2B1FC47FD1E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Retrowars.Data.Repository", "..\Retrowars.Data.Repository\Retrowars.Data.Repository.csproj", "{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{94450967-D020-42B2-B145-2B1FC47FD1E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94450967-D020-42B2-B145-2B1FC47FD1E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94450967-D020-42B2-B145-2B1FC47FD1E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{81F9ABCF-35BF-4D46-A279-6CCFDDDE6279} = {A1A4493A-752A-4881-A62B-8E10D1899D0F}
 		{F6B00AB1-4D0A-47E4-B32E-549F21A0B322} = {8046C570-E0B8-40F0-B57A-285A37CC926F}
 		{95FAF362-5530-4C0C-9B81-CAF0FE97F8C2} = {8046C570-E0B8-40F0-B57A-285A37CC926F}
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E} = {3FF2BFA8-D4BD-4EA0-82F7-76EA51731234}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {105CE443-3C68-4511-83B5-D9A205B85676}

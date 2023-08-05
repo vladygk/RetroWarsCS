@@ -1,4 +1,4 @@
-﻿namespace RetroWars.Data.Models
+﻿namespace Retrowars.Data.Repository
 {
     public class Class1
     {

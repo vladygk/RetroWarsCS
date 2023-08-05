@@ -12,12 +12,30 @@ namespace RetroWarsCS
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString)
+                    .UseLazyLoadingProxies());
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount =
+                        builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+                    options.Password.RequireLowercase =
+                        builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+                    options.Password.RequireUppercase =
+                        builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
+                    options.Password.RequireNonAlphanumeric =
+                        builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+                    options.Password.RequiredLength =
+                        builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
+
+                })
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
