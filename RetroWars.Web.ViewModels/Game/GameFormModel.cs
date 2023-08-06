@@ -25,10 +25,6 @@ public class GameFormModel
     [StringLength(MaxPublisherNameLength, MinimumLength = MinPublisherNameLength)]
     public string Publisher { get; set; } = null!;
 
-    //[Required]
-    //[StringLength(MaxImageUrlLength, MinimumLength = MinImageUrlLength)]
-    //public string ImageUrl { get; set; } = null!;
-
     [Required]
     public IFormFile File { get; set; }
 
@@ -45,5 +41,6 @@ public class GameFormModel
 
     public Guid PlatformId { get; set; }
     public IEnumerable<GameSelectPlatformsFormModel> Platforms { get; set; } = null!;
+  
 }
 

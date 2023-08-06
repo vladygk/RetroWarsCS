@@ -57,7 +57,8 @@ namespace Retrowars.Data.Repository
                 return false;
             }
 
-            this.currentSet.Update(entity);
+            this.currentSet.Remove(toUpdate);
+            await this.currentSet.AddAsync(entity);
             return true;
         }
 

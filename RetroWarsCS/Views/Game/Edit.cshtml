@@ -1,11 +1,11 @@
 ﻿@model GameFormModel
 @using static RetroWars.Common.GeneralApplicationConstants.GameFormPartialModes
 @{
-    ViewData["Title"] = "Add Game";
-    ViewData["Action"] = AddMode;
+    ViewData["Title"] = "Edit page";
+    ViewData["Action"] = EditMode;
 }
 
-<h2>Add a Game to Retro Wars</h2>
+<h2>$ Sudo Edit Game Info</h2>
 
 @await Html.PartialAsync("_GameFormPartial", Model)
 

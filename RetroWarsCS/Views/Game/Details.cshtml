@@ -1,0 +1,31 @@
+﻿@model GameViewModel
+@{
+    ViewData["Title"] = "Details page";
+}
+
+<div class="border w-75 p-3 d-flex flex-column align-items-center">
+    <div>
+        <h1>@Model.Name - @Model.YearOfPublishing</h1>
+    </div>
+    <div >
+        <img style="height: 40vh; width: 20vw" class="mb-2" src="@Model.ImageUrl" />
+    </div>
+    <div>
+        <h2>Developer: @Model.Developer</h2>
+    </div>
+    <div>
+        <h2>Publisher: @Model.Publisher</h2>
+    </div>
+    <div>
+        <h3>@Model.Genre</h3>
+    </div>
+    <div>
+        <h3>@Model.Platform</h3>
+    </div>
+    <div>
+        <p>@Model.Description</p>
+    </div>
+    <div>
+        <a class="btn m-2 " style="color:#FF01FF" asp-controller="Game" asp-action="All">Back</a>
+    </div>
+</div>

@@ -13,9 +13,9 @@
         <h6 class="card-subtitle mb-2 text-muted"> @Model.Publisher</h6>>-
         <h6 class="card-subtitle mb-2 text-muted"> >Year of Publishing: </h6>
         <h6 class="card-subtitle mb-2 text-muted">@Model.YearOfPublishing </h6>
-        <a href="#" class="btn m-2"> Details</a>
-        <a href="#" class="btn m-2 text-warning"> Add to 	Favorites </a>
-        <a href="#" class="btn m-2 text-light"> Edit</a>
+        <a asp-controller="Game" asp-action="Details" asp-route-id="@Model.Id" class="btn m-2"> Details</a>
+        <a href="#" class="btn m-2 " style="color:#FF01FF"> Add to 	Favorites </a>
+        <a asp-controller="Game" asp-action="Edit" asp-route-id="@Model.Id" class="btn m-2 text-light"> Edit</a>
         <a href="#" class="btn m-2 text-danger"> Delete</a>
 
     </div>

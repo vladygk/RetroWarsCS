@@ -17,8 +17,12 @@ public class GameViewModel
 
     public string Genre { get; set; } = null!;
 
+    public string GenreId { get; set; } = null!;
+
     public string Description { get; set; } = null!;
 
-    public string Platforms { get; set; } = null!;
+    public string Platform { get; set; } = null!;
+
+    public string PlatformId { get; set; } = null!;
 }
 

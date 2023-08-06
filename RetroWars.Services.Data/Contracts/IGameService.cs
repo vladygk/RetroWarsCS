@@ -10,7 +10,7 @@ public interface IGameService
 
     public Task CreateGameAsync(GameFormModel gameToAdd);
 
-    public Task<bool> EditGameAsync(string id, GameFormModel newData);
+    public Task EditGameAsync(string id, GameFormModel newData);
 
-    public Task<bool> DeleteGameAsync(string id);
+    public Task DeleteGameAsync(string id);
 }

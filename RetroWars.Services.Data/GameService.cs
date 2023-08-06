@@ -34,7 +34,9 @@ public class GameService : IGameService
             Description = g.Description,
             ImageUrl = g.ImageUrl,
             Genre = g.Genre.Name,
-            Platforms = g.Platform.Name
+            GenreId = g.GenreId.ToString(),
+            Platform = g.Platform.Name,
+            PlatformId = g.PlatformId.ToString()
         });
 
         return allGamesViewModels;
@@ -42,14 +44,35 @@ public class GameService : IGameService
 
     public async Task<GameViewModel?> GetOneGameAsync(string id)
     {
-        throw new NotImplementedException();
+        Game? toFind = await this.gameRepository.GetOneAsync(id, false);
+        if (toFind is null)
+        {
+            throw new ArgumentException("Invalid id");
+        }
+
+        GameViewModel viewModel = new GameViewModel()
+        {
+            Id = toFind.Id.ToString(),
+            ImageUrl = toFind.ImageUrl,
+            Name = toFind.Name,
+            Description = toFind.Description,
+            Developer = toFind.Developer,
+            Publisher = toFind.Publisher,
+            YearOfPublishing = toFind.YearOfPublishing,
+            Genre = toFind.Genre.Name,
+            GenreId = toFind.GenreId.ToString(),
+            Platform = toFind.Platform.Name,
+            PlatformId = toFind.PlatformId.ToString()
+
+        };
+        return viewModel;
     }
 
     public async Task CreateGameAsync(GameFormModel formModel)
     {
         try
         {
-            string pathAndFileName  = await this.UploadFile(formModel.File);
+            string pathAndFileName = await this.UploadFile(formModel.File);
 
             if (!String.IsNullOrWhiteSpace(pathAndFileName))
             {
@@ -87,12 +110,39 @@ public class GameService : IGameService
 
     }
 
-    public async Task<bool> EditGameAsync(string id, GameFormModel newData)
+    public async Task EditGameAsync(string id, GameFormModel newData)
     {
-        throw new NotImplementedException();
+        Game toEdit = await this.gameRepository.GetOneAsync(id, false);
+
+        if (toEdit is null)
+        {
+            throw new ArgumentException("Invalid Id");
+        }
+
+        Game editedGame = new Game()
+        {
+            Id = Guid.Parse(id),
+            Name = newData.Name,
+            Description = newData.Description,
+            Developer = newData.Developer,
+            Publisher = newData.Publisher,
+            YearOfPublishing = newData.YearOfPublishing,
+            GenreId = newData.GenreId,
+            PlatformId = newData.PlatformId,
+            ImageUrl = toEdit.ImageUrl,
+        };
+
+
+
+
+
+        await this.gameRepository.UpdateOneAsync(editedGame);
+        await this.gameRepository.SaveAsync();
+
+
     }
 
-    public async Task<bool> DeleteGameAsync(string id)
+    public async Task DeleteGameAsync(string id)
     {
         throw new NotImplementedException();
     }
@@ -106,7 +156,7 @@ public class GameService : IGameService
         {
             if (file.Length > 0)
             {
-                string filename =Guid.NewGuid() + Path.GetExtension(file.FileName);
+                string filename = Guid.NewGuid() + Path.GetExtension(file.FileName);
                 path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Temp"));
                 pathAndFileName = Path.Combine(path, filename);
                 using (var filestream = new FileStream(pathAndFileName, FileMode.Create))

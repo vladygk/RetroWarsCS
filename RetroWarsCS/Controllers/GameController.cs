@@ -20,27 +20,118 @@ public class GameController : Controller
     [HttpGet]
     public async Task<IActionResult> All()
     {
-        var allGames = await this.gameService.GetAllGamesAsync();
-        return this.View(allGames);
+        try
+        {
+            var allGames = await this.gameService.GetAllGamesAsync();
+            return this.View(allGames);
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Can't load games.";
+            return this.View(new List<GameViewModel>());
+        }
     }
 
     [HttpGet]
     public async Task<IActionResult> Add()
     {
-        GameFormModel formModel = new GameFormModel()
+        try
         {
-            Platforms = await this.platformService.GetAllPlatformsAsync(),
-            Genres = await this.genreService.GetAllGenresAsync()
-        };
-        return this.View(formModel);
+            GameFormModel formModel = new GameFormModel()
+            {
+                Platforms = await this.platformService.GetAllPlatformsAsync(),
+                Genres = await this.genreService.GetAllGenresAsync()
+            };
+            return this.View(formModel);
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Can't load platforms or/and categories";
+            return this.View(new GameFormModel());
+        }
+
     }
 
     [HttpPost]
     public async Task<IActionResult> Add(GameFormModel formModel)
     {
-        await this.gameService.CreateGameAsync(formModel);
+        try
+        {
+            await this.gameService.CreateGameAsync(formModel);
+            TempData[SuccessMessage] = "Success: Game added!";
+            return RedirectToAction("All");
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Can't add Game";
+            formModel.Platforms = await this.platformService.GetAllPlatformsAsync();
+            formModel.Genres = await this.genreService.GetAllGenresAsync();
+            return this.View(formModel);
+        }
 
-        return RedirectToAction("All");
+       
+    }
+    [HttpGet]
+    public async Task<IActionResult> Details(string id)
+    {
+        try
+        {
+          GameViewModel viewModel = await  this.gameService.GetOneGameAsync(id);
+
+          return this.View(viewModel);
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Invalid Game Id provided";
+            return RedirectToAction("All");
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(string id)
+    {
+        try
+        {
+            GameViewModel viewModel = await this.gameService.GetOneGameAsync(id);
+
+            GameFormModel formModel = new GameFormModel()
+            {
+
+                Name = viewModel.Name,
+                Description = viewModel.Description,
+                Developer = viewModel.Developer,
+                Publisher = viewModel.Publisher,
+                YearOfPublishing = viewModel.YearOfPublishing,
+                GenreId = Guid.Parse(viewModel.GenreId),
+                PlatformId = Guid.Parse(viewModel.PlatformId),
+                Platforms = await this.platformService.GetAllPlatformsAsync(),
+                Genres = await this.genreService.GetAllGenresAsync()
+        };
+            
+            return this.View(formModel);
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Invalid Game Id provided";
+            return RedirectToAction("All");
+        }
+
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(string id, GameFormModel formModel)
+    {
+        try
+        {
+          await  this.gameService.EditGameAsync(id, formModel);
+          TempData[SuccessMessage] = "Success: Game edited.";
+          return RedirectToAction("All");
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Couldn't update model.";
+            return RedirectToAction("All");
+        }
     }
 }
 
