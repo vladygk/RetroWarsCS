@@ -1,29 +1,46 @@
 ﻿@model PollViewModel
 
-<div class="d-flex justify-content-center align-items-center">
+<form method="post" class="d-flex flex-column justify-content-center align-items-center border border-4 border-info " style="background-color: #ff01ff;">
+    <div class="row d-flex flex-row" style="height: 48vh">
+        <div class="card m-5 bg-info" style="width: 18rem; height: 30rem;">
 
-    <div class="card m-5 bg-info" style="width: 18rem; height: 37rem;">
-
-        <div class="card-body ">
-            <div class="d-flex justify-content-center">
-                <img src=@Model.FirstGameImageUrl class="card-img-top " style="height: 15vh; width: auto" alt=@Model.FirstGameName>
+            <div class="card-body ">
+                <h1 class="card-title text-dark text-center">@Model.FirstGameName</h1>
+                <div class="d-flex justify-content-center">
+                    <img src=@Model.FirstGameImageUrl class="card-img-top " style="height: 33vh; width: auto" alt=@Model.FirstGameName>
+                </div>
+                <h1 class="card-title text-dark text-center m-2">@Model.FirstGamePublisher</h1>
+                <h1 class="card-title text-dark text-center  m-2">@Model.FirstGamePlatform</h1>
             </div>
-            <h5 class="card-title text-dark">@Model.FirstGameName</h5>
-            
+        </div>
+
+        <div class="card m-5 bg-info" style="width: 18rem; height: 30rem;">
+
+            <div class="card-body ">
+                <h1 class="card-title text-dark text-center">@Model.SecondGameName</h1>
+                <div class="d-flex justify-content-center">
+                    <img src=@Model.SecondGameImageUrl class="card-img-top " style="height: 33vh; width: auto" alt=@Model.SecondGameName>
+                </div>
+                <h1 class="card-title text-dark text-center  m-2">@Model.SecondGamePublisher</h1>
+                <h1 class="card-title text-dark text-center  m-2">@Model.SecondGamePlatform</h1>
+
+
+            </div>
         </div>
     </div>
-
-    <div class="card m-5 bg-info" style="width: 18rem; height: 37rem;">
-
-        <div class="card-body ">
-            <div class="d-flex justify-content-center">
-                <img src=@Model.SecondGameImageUrl class="card-img-top " style="height: 15vh; width: auto" alt=@Model.SecondGameName>
-            </div>
-            <h5 class="card-title text-dark">@Model.SecondGameName</h5>
-           
-            
+    <div class="row d-flex justify-content-center" style="width: 100%">
+        
+        <div class="d-flex justify-content-center align-items-center" style="width: 15vw;height: 3vh">
+            <input type="checkbox" class="btn-check" id="@Model.FirstGameId" name="voting" autocomplete="off">
+            <label class="btn btn-primary" for="@Model.FirstGameId">@Model.FirstGameName</label>
+        </div>
+        <div class="d-flex justify-content-center align-items-center " style="width: 15vw;height: 3vh">
+            <input type="checkbox" class="btn-check" id="@Model.SecondGameId" name="voting" autocomplete="off">
+            <label class="btn btn-primary" for="@Model.SecondGameId">@Model.SecondGameName</label>
         </div>
     </div>
-    <a asp-controller="Poll" asp-action="Details" style="color: #FF01FF" asp-route-id="@Model.Id" class="btn m-2"> Vote</a>
-</div>
+    <div class="row d-flex justify-content-center mt-2">
+        <button type="submit" class="btn btn-warning mb-3 text-white"> Vote</button>
+    </div>
+</form>
 

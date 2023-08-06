@@ -12,9 +12,15 @@ public class PollViewModel
 
     public string FirstGameImageUrl { get; set; } = null!;
 
+    public string FirstGamePublisher{get; set; } = null!;
+    public string FirstGamePlatform { get; set; } = null!;
+
     public Guid SecondGameId { get; set; }
 
     public string SecondGameName { get; set; } = null!;
+
+    public string SecondGamePublisher { get; set; } = null!;
+    public string SecondGamePlatform { get; set; } = null!;
 
     public string SecondGameImageUrl { get; set; } = null!;
 

@@ -25,6 +25,10 @@ public class PollService : IPollService
             SecondGameName = p.SecondGame.Name,
             FirstGameImageUrl = p.FirstGame.ImageUrl,
             SecondGameImageUrl = p.SecondGame.ImageUrl,
+            FirstGamePlatform = p.FirstGame.Platform.Name,
+            FirstGamePublisher = p.FirstGame.Publisher,
+            SecondGamePlatform = p.SecondGame.Platform.Name,
+            SecondGamePublisher = p.SecondGame.Publisher,
             IsActive = p.IsActive,
             VotesForFirst = p.VotesForFirst,
             VotesForSecond = p.VotesForSecond
@@ -37,7 +41,7 @@ public class PollService : IPollService
     {
         Poll newPoll = new Poll()
         {
-            FirstGameId = Guid.Parse(formModel.SecondGameId),
+            FirstGameId = Guid.Parse(formModel.FirstGameId),
             SecondGameId = Guid.Parse(formModel.SecondGameId),
             IsActive = true,
             VotesForFirst = 0,
@@ -45,6 +49,7 @@ public class PollService : IPollService
         };
 
         await this.pollRepository.AddAsync(newPoll);
+        await this.pollRepository.SaveAsync();
     }
 }
 

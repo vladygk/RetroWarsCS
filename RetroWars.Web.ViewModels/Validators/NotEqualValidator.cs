@@ -1,4 +1,4 @@
-﻿namespace RetroWars.Web.Infrastructure.Validators;
+﻿namespace RetroWars.Web.ViewModels.Validators;
 
 using System.ComponentModel.DataAnnotations;
 

@@ -44,9 +44,27 @@ public class PollController : Controller
         }
         catch
         {
-          
+            TempData[ErrorMessage] = "Error: Can't load polls.";
+            return RedirectToAction("All", "Poll");
         }
-        
+
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(PollFormModel model)
+    {
+        try
+        {
+            await this.pollService.CreatePollAsync(model);
+            TempData[SuccessMessage] = "Success: Poll created.";
+
+            return RedirectToAction("All", "Poll");
         }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Can't create poll.";
+            return RedirectToAction("All", "Poll");
+        }
+    }
 }
 

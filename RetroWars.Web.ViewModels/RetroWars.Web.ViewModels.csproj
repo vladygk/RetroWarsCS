@@ -26,4 +26,10 @@
     <ProjectReference Include="..\RetroWars.Services.Mapping\RetroWars.Services.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="RetroWars.Web.Infrastructure">
+      <HintPath>..\RetroWars.Web.Infrastructure\bin\Debug\net6.0\RetroWars.Web.Infrastructure.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
