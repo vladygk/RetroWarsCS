@@ -60,9 +60,20 @@ public class GameController : Controller
     {
         try
         {
-            await this.gameService.CreateGameAsync(formModel);
-            TempData[SuccessMessage] = "Success: Game added!";
-            return RedirectToAction("All");
+            if (ModelState.IsValid)
+            {
+                await this.gameService.CreateGameAsync(formModel);
+                TempData[SuccessMessage] = "Success: Game added!";
+                return RedirectToAction("All");
+            }
+
+            TempData[ErrorMessage] = "Error: Invalid data";
+
+            formModel.Genres = await this.genreService.GetAllGenresAsync();
+            formModel.Platforms = await this.platformService.GetAllPlatformsAsync();
+
+            return this.View(formModel);
+
         }
         catch
         {
@@ -126,9 +137,18 @@ public class GameController : Controller
     {
         try
         {
-            await this.gameService.EditGameAsync(id, formModel);
-            TempData[SuccessMessage] = "Success: Game edited.";
-            return RedirectToAction("All");
+            if (ModelState.IsValid)
+            {
+                await this.gameService.EditGameAsync(id, formModel);
+                TempData[SuccessMessage] = "Success: Game edited.";
+                return RedirectToAction("All");
+            }
+            TempData[ErrorMessage] = "Error: Invalid data";
+
+            formModel.Genres = await this.genreService.GetAllGenresAsync();
+            formModel.Platforms = await this.platformService.GetAllPlatformsAsync();
+
+            return this.View(formModel);
         }
         catch
         {

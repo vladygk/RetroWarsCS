@@ -55,10 +55,18 @@ public class PollController : Controller
     {
         try
         {
-            await this.pollService.CreatePollAsync(model);
-            TempData[SuccessMessage] = "Success: Poll created.";
+            if (ModelState.IsValid)
+            {
+                await this.pollService.CreatePollAsync(model);
+                TempData[SuccessMessage] = "Success: Poll created.";
+                return RedirectToAction("All", "Poll");
+            }
 
-            return RedirectToAction("All", "Poll");
+            TempData[ErrorMessage] = "Error: Can't create a Poll for the same game";
+            model.Games = await this.gameService.GetAllPollSelectGameViewModels();
+            return this.View(model);
+
+
         }
         catch
         {
