@@ -9,8 +9,10 @@ public class GameEntityConfiguration : IEntityTypeConfiguration<Game>
     public void Configure(EntityTypeBuilder<Game> builder)
     {
         builder
-            .HasMany(g => g.Platforms)
-            .WithMany(p => p.Games);
+            .HasOne(g => g.Platform)
+            .WithMany(p => p.Games)
+            .HasForeignKey(g => g.PlatformId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder
             .HasOne(g => g.Genre)

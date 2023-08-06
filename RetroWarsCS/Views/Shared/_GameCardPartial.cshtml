@@ -1,14 +1,17 @@
 ﻿@model GameViewModel
 
-<div class="card" style="width: 18rem;">
-    <img src=@Model.ImageUrl class="card-img-top" alt=@Model.Name>
-    <div class="card-body">
+<div class="card m-5" style="width: 18rem;">
+    
+    <div class="card-body " >
+        <div class="d-flex justify-content-center">
+        <img src=@Model.ImageUrl class="card-img-top " style="height: 15vh; width: auto" alt=@Model.Name>
+        </div>
         <h5 class="card-title">@Model.Name</h5>
         <h6 class="card-subtitle mb-2 text-muted">Developer: @Model.Developer</h6>
         <h6 class="card-subtitle mb-2 text-muted">Publisher: @Model.Publisher</h6>
         <h6 class="card-subtitle mb-2 text-muted">Year of Publishing: @Model.YearOfPublishing</h6>
         <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
-       
+
     </div>
 </div>
 

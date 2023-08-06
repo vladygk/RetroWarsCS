@@ -12,7 +12,7 @@ public class Game : IBaseEntity
 
     public Game()
     {
-        this.Platforms = new HashSet<Platform>();
+        
         this.Id = Guid.NewGuid();
     }
 
@@ -46,8 +46,10 @@ public class Game : IBaseEntity
     [MaxLength(MaxDescriptionLength)]
     public string Description { get; set; } = null!;
 
+    [Required]
+    public Guid PlatformId { get; set; }
 
-    public virtual ICollection<Platform> Platforms { get; set; }
+    public virtual Platform Platform { get; set; }
 
     public virtual ICollection<Poll> PollsAsFirstParticipant { get; set; }
 

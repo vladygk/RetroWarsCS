@@ -1,16 +1,23 @@
-﻿using RetroWars.Data.Models;
-using Retrowars.Data.Repository;
-using RetroWars.Services.Data.Contracts;
-using RetroWars.Web.ViewModels.Game;
+﻿namespace RetroWars.Services.Data;
 
-namespace RetroWars.Services.Data;
+using Bluebean_Backend.Utils.Interfaces;
+using RetroWars.Data.Models;
+using Retrowars.Data.Repository;
+using Contracts;
+using Web.ViewModels.Game;
+using Microsoft.AspNetCore.Http;
+
+using static Common.GeneralApplicationConstants;
 
 public class GameService : IGameService
 {
     private readonly IRepository<Game> gameRepository;
-    public GameService(IRepository<Game> gameRepository)
+    private readonly IFireBaseService firebaseService;
+
+    public GameService(IRepository<Game> gameRepository, IFireBaseService firebaseService)
     {
         this.gameRepository = gameRepository;
+        this.firebaseService = firebaseService;
     }
 
     public async Task<IEnumerable<GameViewModel>> GetAllGamesAsync()
@@ -27,7 +34,7 @@ public class GameService : IGameService
             Description = g.Description,
             ImageUrl = g.ImageUrl,
             Genre = g.Genre.Name,
-            Platforms = String.Join(", ", g.Platforms)
+            Platforms = g.Platform.Name
         });
 
         return allGamesViewModels;
@@ -38,9 +45,44 @@ public class GameService : IGameService
         throw new NotImplementedException();
     }
 
-    public async Task CreateGameAsync(GameFormModel gameToAdd)
+    public async Task CreateGameAsync(GameFormModel formModel)
     {
-        throw new NotImplementedException();
+        try
+        {
+            string pathAndFileName  = await this.UploadFile(formModel.File);
+
+            if (!String.IsNullOrWhiteSpace(pathAndFileName))
+            {
+
+                string base64Image = ConvertToBase64(pathAndFileName);
+
+                string imageUrl = await this.firebaseService.UploadFile(base64Image, DefaultFireBaseStorageFolder, pathAndFileName);
+
+                Game newGame = new Game()
+                {
+                    Name = formModel.Name,
+                    Description = formModel.Description,
+                    Developer = formModel.Developer,
+                    Publisher = formModel.Publisher,
+                    YearOfPublishing = formModel.YearOfPublishing,
+                    GenreId = formModel.GenreId,
+                    PlatformId = formModel.PlatformId,
+                    ImageUrl = imageUrl,
+                };
+
+
+                await this.gameRepository.AddAsync(newGame);
+                await this.gameRepository.SaveAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception("Can't add game");
+        }
+
+
+
     }
 
     public async Task<bool> EditGameAsync(string id, GameFormModel newData)
@@ -51,6 +93,44 @@ public class GameService : IGameService
     public async Task<bool> DeleteGameAsync(string id)
     {
         throw new NotImplementedException();
+    }
+
+    private async Task<string> UploadFile(IFormFile file)
+    {
+        string path = String.Empty;
+
+        string pathAndFileName = String.Empty;
+        try
+        {
+            if (file.Length > 0)
+            {
+                string filename ="file" + Path.GetExtension(file.FileName);
+                path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Temp"));
+                pathAndFileName = Path.Combine(path, filename);
+                using (var filestream = new FileStream(pathAndFileName, FileMode.Create))
+                {
+                    await file.CopyToAsync(filestream);
+                }
+
+                return pathAndFileName;
+            }
+
+        }
+        catch (Exception)
+        {
+            throw new Exception("Can't upload file");
+        }
+        return pathAndFileName;
+    }
+
+    private string ConvertToBase64(string path)
+    {
+        //string path = @"D:\Test.PNG";
+
+        byte[] bytes = File.ReadAllBytes(path);
+        string fileBase64 = Convert.ToBase64String(bytes);
+
+        return fileBase64;
     }
 }
 

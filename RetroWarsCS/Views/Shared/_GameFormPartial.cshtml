@@ -1,0 +1,84 @@
+﻿@model GameFormModel
+
+<form method="post" class="vh-100 " enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-md-5 mt-md-4 pb-5">
+
+
+                            <h3 class="text-white-50 mb-5">Please enter correct information</h3>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="Name" type="text" class="form-control form-control-lg" />
+                                <label asp-for="Name" class="form-label" for="typeNameX">Title</label>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="Developer" type="text" class="form-control form-control-lg" />
+                                <label asp-for="Developer" class="form-label">Developer</label>
+                                <span asp-validation-for="Developer" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <select asp-for="GenreId" class="form-select mt-3" required>
+                                    @foreach (var genre in Model.Genres)
+                                    {
+                                        <option value="@genre.Id">@genre.Name</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="Publisher" type="text" id="typeNameX" class="form-control form-control-lg" />
+                                <label asp-for="Publisher" class="form-label" for="typeNameX">Publisher</label>
+                                <span asp-validation-for="Publisher" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <select asp-for="PlatformId" class="form-select mt-3" required>
+                                    @foreach (var platform in Model.Platforms)
+                                    {
+                                        <option value="@platform.Id">@platform.Name</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="File"  type="file" id="typeNameX" class="form-control form-control-lg" />
+                                <label asp-for="File"  class="form-label" for="typeNameX">Image</label>
+                                <span asp-validation-for="File" class="text-danger"></span>
+                                
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="YearOfPublishing" type="number" id="typeNameX" class="form-control form-control-lg" />
+                                <label asp-for="YearOfPublishing" class="form-label" for="typeNameX">Year of publishing</label>
+                                <span asp-validation-for="YearOfPublishing" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <textarea asp-for="Description" id="typePasswordX" class="form-control form-control-lg"></textarea>
+                                <label asp-for="Description" class="form-label" for="typePasswordX">Description</label>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+
+
+                            <button type="submit" class="btn btn-outline-light btn-lg px-5" type="submit">Add Game</button>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

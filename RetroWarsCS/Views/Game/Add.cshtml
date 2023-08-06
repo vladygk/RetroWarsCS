@@ -1,0 +1,12 @@
+﻿@model GameFormModel
+@{
+    ViewData["Title"] = "Add Game";
+}
+
+<h2>Add a Game to Retro Wars</h2>
+
+@await Html.PartialAsync("_GameFormPartial", Model)
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

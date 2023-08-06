@@ -6,19 +6,21 @@
 
 <div class="container mx-auto mt-4">
     <div class="row">
-        <div class="col-md-4">
-            @if (Model.Any())
-            {
-                @foreach (GameViewModel gmv in Model)
-                {
-                    @await Html.PartialAsync("_GameCardPartial", gmv)
-                }
-            }
-            else
-            {
-                <h5>No games added to RetroWars.</h5>
-            }
 
-        </div>
+        @if (Model.Any())
+        {
+            @foreach (GameViewModel gmv in Model)
+            {
+                <div class="col-md-4">
+                    @await Html.PartialAsync("_GameCardPartial", gmv)
+                </div>
+            }
+        }
+        else
+        {
+            <h5>No games added to RetroWars.</h5>
+        }
+
+
     </div>
 </div>

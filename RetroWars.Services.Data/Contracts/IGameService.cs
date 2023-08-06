@@ -1,5 +1,6 @@
 ﻿namespace RetroWars.Services.Data.Contracts;
 
+
 using Web.ViewModels.Game;
 
 public interface IGameService
