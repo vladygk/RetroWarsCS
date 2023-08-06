@@ -17,7 +17,7 @@
             public const int MaxDescriptionLength = 300;
 
             public const int MinImageUrlLength = 10;
-            public const int MaxImageUrlLength= 250;
+            public const int MaxImageUrlLength= 1000;
 
             public const string MinYear = "1950";
             public const string MaxYear = "2023";

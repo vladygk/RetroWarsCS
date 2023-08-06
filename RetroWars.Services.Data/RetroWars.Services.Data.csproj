@@ -30,8 +30,4 @@
     <ProjectReference Include="..\RetroWars.Web.ViewModels\RetroWars.Web.ViewModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Temp\" />
-  </ItemGroup>
-
 </Project>

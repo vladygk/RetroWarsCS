@@ -1,16 +1,22 @@
 ﻿@model GameViewModel
 
-<div class="card m-5" style="width: 18rem;">
+<div class="card m-5 bg-info" style="width: 18rem; height: 37rem;">
     
     <div class="card-body " >
         <div class="d-flex justify-content-center">
         <img src=@Model.ImageUrl class="card-img-top " style="height: 15vh; width: auto" alt=@Model.Name>
         </div>
-        <h5 class="card-title">@Model.Name</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Developer: @Model.Developer</h6>
-        <h6 class="card-subtitle mb-2 text-muted">Publisher: @Model.Publisher</h6>
-        <h6 class="card-subtitle mb-2 text-muted">Year of Publishing: @Model.YearOfPublishing</h6>
-        <a href="#" class="btn mr-2"><i class="fas fa-link"></i> Visit Site</a>
+        <h5 class="card-title text-dark">@Model.Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted"> >Developer: </h6>
+        <h6 class="card-subtitle mb-2 text-muted">@Model.Developer </h6>>-
+        <h6 class="card-subtitle mb-2 text-muted"> >Publisher:</h6>
+        <h6 class="card-subtitle mb-2 text-muted"> @Model.Publisher</h6>>-
+        <h6 class="card-subtitle mb-2 text-muted"> >Year of Publishing: </h6>
+        <h6 class="card-subtitle mb-2 text-muted">@Model.YearOfPublishing </h6>
+        <a href="#" class="btn m-2"> Details</a>
+        <a href="#" class="btn m-2 text-warning"> Add to 	Favorites </a>
+        <a href="#" class="btn m-2 text-light"> Edit</a>
+        <a href="#" class="btn m-2 text-danger"> Delete</a>
 
     </div>
 </div>

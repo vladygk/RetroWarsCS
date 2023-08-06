@@ -56,7 +56,7 @@ public class GameService : IGameService
 
                 string base64Image = ConvertToBase64(pathAndFileName);
 
-                string imageUrl = await this.firebaseService.UploadFile(base64Image, DefaultFireBaseStorageFolder, pathAndFileName);
+                string imageUrl = await this.firebaseService.UploadFile(base64Image, DefaultFireBaseStorageFolder, pathAndFileName.Split("\\", StringSplitOptions.RemoveEmptyEntries)[^1]);
 
                 Game newGame = new Game()
                 {
@@ -73,6 +73,8 @@ public class GameService : IGameService
 
                 await this.gameRepository.AddAsync(newGame);
                 await this.gameRepository.SaveAsync();
+
+                File.Delete(pathAndFileName);
             }
         }
         catch (Exception ex)
@@ -104,7 +106,7 @@ public class GameService : IGameService
         {
             if (file.Length > 0)
             {
-                string filename ="file" + Path.GetExtension(file.FileName);
+                string filename =Guid.NewGuid() + Path.GetExtension(file.FileName);
                 path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Temp"));
                 pathAndFileName = Path.Combine(path, filename);
                 using (var filestream = new FileStream(pathAndFileName, FileMode.Create))
@@ -125,7 +127,6 @@ public class GameService : IGameService
 
     private string ConvertToBase64(string path)
     {
-        //string path = @"D:\Test.PNG";
 
         byte[] bytes = File.ReadAllBytes(path);
         string fileBase64 = Convert.ToBase64String(bytes);
