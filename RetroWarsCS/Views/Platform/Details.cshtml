@@ -1,0 +1,36 @@
+﻿@model PlatformViewModel
+@using static RetroWars.Common.GeneralApplicationConstants
+@{
+    ViewData["Title"] = "Details - Platform page";
+}
+
+<div class="border border-info border-4 w-75 p-3 d-flex flex-column align-items-center">
+    <div>
+        <h1>@Model.Name - @Model.YearOfRelease</h1>
+    </div>
+    <div>
+        <img style="height: 40vh; width: 20vw" class="mb-2" src="@Model.ImageUrl" />
+    </div>
+    <div>
+        <h2>Developer: @Model.Company</h2>
+    </div>
+    @if (Model.Games is not null && Model.Games.Any())
+    {
+        <div>
+            <h3>Games:</h3>
+            <ul>
+                @foreach (var game in Model.Games.Split(", ", StringSplitOptions.RemoveEmptyEntries).Take(MaxNumberOfGamesToDisplayForPlatform))
+                {
+                    <li>@game</li>
+                }
+            </ul>
+        </div>
+    }
+    <div>
+        <p>@Model.Description</p>
+    </div>
+    <div>
+        <a class="btn m-2 " style="color:#FF01FF" asp-controller="Platform" asp-action="All">Back</a>
+    </div>
+</div>
+

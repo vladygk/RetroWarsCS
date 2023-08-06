@@ -1,0 +1,26 @@
+﻿@model IEnumerable<PlatformViewModel>
+@{
+    ViewData["Title"] = "All Platforms";
+}
+
+<div class="container mx-auto mt-4">
+    <div><h2 style="color:#FF01FF">Cat /All platforms</h2></div>
+    <div class="row">
+
+        @if (Model.Any())
+        {
+            @foreach (PlatformViewModel viewModel in Model)
+            {
+                <div class="col-md-4">
+                    @await Html.PartialAsync("_PlatformCardPartial", viewModel)
+                </div>
+            }
+        }
+        else
+        {
+            <h5>No platforms added to RetroWars.</h5>
+        }
+
+
+    </div>
+</div>

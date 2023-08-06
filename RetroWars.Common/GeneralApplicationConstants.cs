@@ -8,7 +8,7 @@ public static class GeneralApplicationConstants
     public const string AdminRoleName = "Administrator";
     public const string UsersCacheKey = "UsersCache";
     public const string DefaultFireBaseStorageFolder = "Images";
-
+    public const int MaxNumberOfGamesToDisplayForPlatform = 10;
 
     public static class GameFormPartialModes
     {

@@ -38,13 +38,16 @@
                         @if (isAuthenticated)
                         {
                             <li>
-                                <a class="nav-link text-dark "  asp-area="" asp-controller="Game" asp-action="All">Gallery</a>
+                                <a class=" text-primary btn "  asp-area="" asp-controller="Game" asp-action="All">Gallery</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark " asp-area="" asp-controller="Game" asp-action="Add">Add_Game</a>
+                                <a class=" text-warning btn" asp-area="" asp-controller="Game" asp-action="Add">Add_Game</a>
                             </li>
                             <li>
-                                <a class="nav-link text-dark " asp-area="" asp-controller="Game" asp-action="Favorites">Favorites</a>
+                                <a class=" text-info btn" asp-area="" asp-controller="Game" asp-action="Favorites">Favorites</a>
+                            </li>
+                            <li>
+                                <a class=" text-success btn" asp-area="" asp-controller="Platform" asp-action="All">All_Platforms</a>
                             </li>
                         }
                     </ul>
