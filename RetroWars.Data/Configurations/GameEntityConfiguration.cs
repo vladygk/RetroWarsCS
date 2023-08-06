@@ -17,8 +17,11 @@ public class GameEntityConfiguration : IEntityTypeConfiguration<Game>
         builder
             .HasOne(g => g.Genre)
             .WithMany(gr => gr.Games)
-            .HasForeignKey(g=>g.GenreId)
+            .HasForeignKey(g => g.GenreId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(g => g.Users)
+            .WithMany(u => u.FavoriteGames);
     }
 }
 

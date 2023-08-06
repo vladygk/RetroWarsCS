@@ -1,4 +1,6 @@
-﻿namespace RetroWars.Web.Controllers;
+﻿using RetroWars.Web.Infrastructure.Extensions;
+
+namespace RetroWars.Web.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using RetroWars.Web.ViewModels.Game;
@@ -10,9 +12,10 @@ public class GameController : Controller
     private readonly IGameService gameService;
     private readonly IGenreService genreService;
     private readonly IPlatformService platformService;
-    public GameController(IGameService gameService, IGenreService genreService, IPlatformService platformService)
+    private readonly IUserService userService;
+    public GameController(IGameService gameService, IGenreService genreService, IPlatformService platformService, IUserService userService)
     {
-
+        this.userService = userService;
         this.gameService = gameService;
         this.genreService = genreService;
         this.platformService = platformService;
@@ -69,16 +72,16 @@ public class GameController : Controller
             return this.View(formModel);
         }
 
-       
+
     }
     [HttpGet]
     public async Task<IActionResult> Details(string id)
     {
         try
         {
-          GameViewModel viewModel = await  this.gameService.GetOneGameAsync(id);
+            GameViewModel viewModel = await this.gameService.GetOneGameAsync(id);
 
-          return this.View(viewModel);
+            return this.View(viewModel);
         }
         catch
         {
@@ -106,8 +109,8 @@ public class GameController : Controller
                 PlatformId = Guid.Parse(viewModel.PlatformId),
                 Platforms = await this.platformService.GetAllPlatformsAsync(),
                 Genres = await this.genreService.GetAllGenresAsync()
-        };
-            
+            };
+
             return this.View(formModel);
         }
         catch
@@ -123,13 +126,102 @@ public class GameController : Controller
     {
         try
         {
-          await  this.gameService.EditGameAsync(id, formModel);
-          TempData[SuccessMessage] = "Success: Game edited.";
-          return RedirectToAction("All");
+            await this.gameService.EditGameAsync(id, formModel);
+            TempData[SuccessMessage] = "Success: Game edited.";
+            return RedirectToAction("All");
         }
         catch
         {
             TempData[ErrorMessage] = "Error: Couldn't update model.";
+            return RedirectToAction("All");
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(string id)
+    {
+        try
+        {
+            GameViewModel viewModel = await this.gameService.GetOneGameAsync(id);
+
+            GameFormModel formModel = new GameFormModel()
+            {
+
+                Name = viewModel.Name,
+                Description = viewModel.Description,
+                Developer = viewModel.Developer,
+                Publisher = viewModel.Publisher,
+                YearOfPublishing = viewModel.YearOfPublishing,
+                GenreId = Guid.Parse(viewModel.GenreId),
+                PlatformId = Guid.Parse(viewModel.PlatformId),
+                Platforms = await this.platformService.GetAllPlatformsAsync(),
+                Genres = await this.genreService.GetAllGenresAsync()
+            };
+
+            return this.View(formModel);
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Invalid Game Id provided";
+            return RedirectToAction("All");
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(string id, bool other = true)
+    {
+        try
+        {
+            await this.gameService.DeleteGameAsync(id);
+            TempData[SuccessMessage] = "Success: Game deleted";
+            return RedirectToAction("All");
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Invalid Game Id provided";
+            return RedirectToAction("All");
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> AddToFavorites(string id)
+    {
+        string userId = User.GetId()!;
+
+        await this.userService.AddGameToFavoritesAsync(id, userId);
+
+        return RedirectToAction("Favorites");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Favorites()
+    {
+        string userId = User.GetId()!;
+        try
+        {
+            IEnumerable<GameViewModel> viewModel = await this.gameService.GetFavoritesAsync(userId);
+
+            return this.View(viewModel);
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Couldn't get favorite games.";
+            return RedirectToAction("All");
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> RemoveFromFavorites(string id)
+    {
+        string userId = User.GetId()!;
+        try
+        {
+            await this.userService.RemoveGameFromFavoritesAsync(id, userId);
+            return RedirectToAction("Favorites");
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Couldn't remove from favorite games.";
             return RedirectToAction("All");
         }
     }

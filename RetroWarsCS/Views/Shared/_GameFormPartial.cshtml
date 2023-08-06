@@ -1,6 +1,11 @@
 ﻿@model GameFormModel
 @using static RetroWars.Common.GeneralApplicationConstants.GameFormPartialModes
 
+@{
+    string buttonName = ViewData["Action"] == DeleteMode ? "Delete" : "Save";
+    bool isDisabled = ViewData["Action"] == DeleteMode;
+    string smartText = ViewData["Action"] == DeleteMode ? "Please review before deletion" : "Please enter correct information";
+}
 <form method="post" class="vh-100 " enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="container py-5 h-100">
@@ -12,22 +17,22 @@
                         <div class="mb-md-5 mt-md-4 pb-5">
 
 
-                            <h3 class="text-white-50 mb-5">Please enter correct information</h3>
+                            <h3 class="text-white-50 mb-5">@smartText</h3>
 
                             <div class="form-outline form-white mb-4">
-                                <input asp-for="Name" type="text" class="form-control form-control-lg" />
+                                <input asp-for="Name" type="text" class="form-control form-control-lg" disabled="@isDisabled" />
                                 <label asp-for="Name" class="form-label" for="typeNameX">Title</label>
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
 
                             <div class="form-outline form-white mb-4">
-                                <input asp-for="Developer" type="text" class="form-control form-control-lg" />
+                                <input asp-for="Developer" type="text" class="form-control form-control-lg" disabled="@isDisabled" />
                                 <label asp-for="Developer" class="form-label">Developer</label>
                                 <span asp-validation-for="Developer" class="text-danger"></span>
                             </div>
 
                             <div class="form-outline form-white mb-4">
-                                <select asp-for="GenreId" class="form-select mt-3" required>
+                                <select asp-for="GenreId" class="form-select mt-3" required disabled="@isDisabled">
                                     @foreach (var genre in Model.Genres)
                                     {
                                         @if (Model.GenreId == genre.Id)
@@ -43,13 +48,13 @@
                             </div>
 
                             <div class="form-outline form-white mb-4">
-                                <input asp-for="Publisher" type="text" id="typeNameX" class="form-control form-control-lg" />
+                                <input asp-for="Publisher" type="text" id="typeNameX" class="form-control form-control-lg" disabled="@isDisabled" />
                                 <label asp-for="Publisher" class="form-label" for="typeNameX">Publisher</label>
                                 <span asp-validation-for="Publisher" class="text-danger"></span>
                             </div>
 
                             <div class="form-outline form-white mb-4">
-                                <select asp-for="PlatformId" class="form-select mt-3" required>
+                                <select asp-for="PlatformId" class="form-select mt-3" required disabled="@isDisabled">
                                     @foreach (var platform in Model.Platforms)
                                     {
                                         @if (Model.PlatformId == platform.Id)
@@ -74,20 +79,20 @@
                             }
 
                             <div class="form-outline form-white mb-4">
-                                <input asp-for="YearOfPublishing" type="number" id="typeNameX" class="form-control form-control-lg" />
+                                <input asp-for="YearOfPublishing" type="number" id="typeNameX" class="form-control form-control-lg" disabled="@isDisabled" />
                                 <label asp-for="YearOfPublishing" class="form-label" for="typeNameX">Year of publishing</label>
                                 <span asp-validation-for="YearOfPublishing" class="text-danger"></span>
                             </div>
 
                             <div class="form-outline form-white mb-4">
-                                <textarea asp-for="Description" id="typePasswordX" class="form-control form-control-lg"></textarea>
+                                <textarea asp-for="Description" id="typePasswordX" class="form-control form-control-lg" disabled="@isDisabled"></textarea>
                                 <label asp-for="Description" class="form-label" for="typePasswordX">Description</label>
                                 <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
 
 
 
-                            <button type="submit" class="btn btn-outline-light btn-lg px-5" type="submit">Save</button>
+                            <button type="submit" class="btn btn-outline-light btn-lg px-5" type="submit">@buttonName</button>
 
                         </div>
 

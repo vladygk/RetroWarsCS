@@ -14,6 +14,7 @@ public static class GeneralApplicationConstants
     {
         public const string EditMode = "Edit";
         public const string AddMode = "Add";
+        public const string DeleteMode = "Delete";
     }
 }
 

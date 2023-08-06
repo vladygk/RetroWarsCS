@@ -4,7 +4,7 @@
     
     <div class="card-body " >
         <div class="d-flex justify-content-center">
-        <img src=@Model.ImageUrl class="card-img-top " style="height: 15vh; width: auto" alt=@Model.Name>
+            <img src=@Model.ImageUrl class="card-img-top " style="height: 15vh; width: auto" alt=@Model.Name>
         </div>
         <h5 class="card-title text-dark">@Model.Name</h5>
         <h6 class="card-subtitle mb-2 text-muted"> >Developer: </h6>
@@ -14,10 +14,9 @@
         <h6 class="card-subtitle mb-2 text-muted"> >Year of Publishing: </h6>
         <h6 class="card-subtitle mb-2 text-muted">@Model.YearOfPublishing </h6>
         <a asp-controller="Game" asp-action="Details" asp-route-id="@Model.Id" class="btn m-2"> Details</a>
-        <a asp-controller="Game" asp-action="AddToFavorites" asp-route-id="@Model.Id" class="btn m-2 " style="color:#FF01FF"> Add to 	Favorites </a>
-        <a asp-controller="Game" asp-action="Edit" asp-route-id="@Model.Id" class="btn m-2 text-light"> Edit</a>
-        <a asp-controller="Game" asp-action="Delete" asp-route-id="@Model.Id" class="btn m-2 text-danger"> Delete</a>
+        <a asp-controller="Game" asp-action="RemoveFromFavorites" asp-route-id="@Model.Id" class="btn m-2 text-danger" > Remove from 	Favorites </a>
+       
+        
 
     </div>
 </div>
-

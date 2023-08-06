@@ -13,4 +13,6 @@ public interface IGameService
     public Task EditGameAsync(string id, GameFormModel newData);
 
     public Task DeleteGameAsync(string id);
+
+    public Task<IEnumerable<GameViewModel>> GetFavoritesAsync(string userId);
 }

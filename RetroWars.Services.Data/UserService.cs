@@ -8,11 +8,13 @@ namespace RetroWars.Services.Data;
 public class UserService : IUserService
 {
     private readonly IRepository<ApplicationUser> applicationUserRepository;
-
-    public UserService(IRepository<ApplicationUser> applicationUserRepository)
+    private readonly  IRepository<Game> gameRepository;
+    public UserService(IRepository<ApplicationUser> applicationUserRepository, IRepository<Game> gameRepository)
     {
         this.applicationUserRepository = applicationUserRepository;
+        this.gameRepository = gameRepository;
     }
+
     public async Task<string> GetFullNameByEmailAsync(string email)
     {
         ApplicationUser? user = await this.applicationUserRepository
@@ -24,6 +26,49 @@ public class UserService : IUserService
         }
 
         return $"{user.FirstName} {user.LastName}";
+    }
+
+    public async Task AddGameToFavoritesAsync(string gameId, string userId)
+    {
+        
+        ApplicationUser? user = await this.applicationUserRepository.GetOneAsync(userId, false);
+        Game? game = await this.gameRepository.GetOneAsync(gameId, false);
+
+        if (game is null || user is null)
+        {
+            throw new ArgumentException("Invalid Ids.");
+        }
+
+        user.FavoriteGames.Add(game);
+        game.Users.Add(user);
+
+        await this.gameRepository.SaveAsync();
+
+    }
+
+    public async Task RemoveGameFromFavoritesAsync(string gameId, string userId)
+    {
+        ApplicationUser? user = await this.applicationUserRepository.GetOneAsync(userId, false);
+        Game? game = await this.gameRepository.GetOneAsync(gameId, false);
+
+        if (game is null || user is null)
+        {
+            throw new ArgumentException("Invalid Ids.");
+        }
+        user.FavoriteGames.Remove(game);
+        game.Users.Remove(user);
+
+        await this.gameRepository.SaveAsync();
+    }
+
+    public async Task<ICollection<Game>> GetApplicationUserFavoritesByIdAsync(string userId)
+    {
+        ApplicationUser? user = await this.applicationUserRepository.GetOneAsync(userId, false);
+        if (user is null)
+        {
+            throw new ArgumentException("Invalid Id");
+        }
+        return user.FavoriteGames;
     }
 
     public async Task<string> GetFullNameByIdAsync(string userId)

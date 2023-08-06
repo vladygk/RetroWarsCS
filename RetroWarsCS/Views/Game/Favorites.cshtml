@@ -1,0 +1,27 @@
+﻿@model IEnumerable<GameViewModel>
+@{
+    ViewData["Title"] = "Favorite Games";
+}
+
+
+<div class="container mx-auto mt-4">
+    <div class="row"><h2>List of all your favorite games, chief</h2></div>
+    <div class="row">
+
+        @if (Model.Any())
+        {
+            @foreach (GameViewModel gmv in Model)
+            {
+                <div class="col-md-4">
+                    @await Html.PartialAsync("_FavoriteGameCardPartial", gmv)
+                </div>
+            }
+        }
+        else
+        {
+            <h5>No games added to Favorites.</h5>
+        }
+
+
+    </div>
+</div>

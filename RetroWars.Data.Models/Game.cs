@@ -12,7 +12,10 @@ public class Game : IBaseEntity
 
     public Game()
     {
-        
+        this.Users = new HashSet<ApplicationUser>();
+        this.PollsAsFirstParticipant = new HashSet<Poll>();
+        this.PollsAsSecondParticipant = new HashSet<Poll>();
+
         this.Id = Guid.NewGuid();
     }
 
@@ -50,6 +53,8 @@ public class Game : IBaseEntity
     public Guid PlatformId { get; set; }
 
     public virtual Platform Platform { get; set; }
+
+    public virtual ICollection<ApplicationUser> Users { get; set; }
 
     public virtual ICollection<Poll> PollsAsFirstParticipant { get; set; }
 

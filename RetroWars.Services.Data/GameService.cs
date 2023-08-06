@@ -13,11 +13,13 @@ public class GameService : IGameService
 {
     private readonly IRepository<Game> gameRepository;
     private readonly IFireBaseService firebaseService;
+    private readonly IUserService userService;
 
-    public GameService(IRepository<Game> gameRepository, IFireBaseService firebaseService)
+    public GameService(IRepository<Game> gameRepository, IFireBaseService firebaseService, IUserService userService)
     {
         this.gameRepository = gameRepository;
         this.firebaseService = firebaseService;
+        this.userService = userService;
     }
 
     public async Task<IEnumerable<GameViewModel>> GetAllGamesAsync()
@@ -112,6 +114,8 @@ public class GameService : IGameService
 
     public async Task EditGameAsync(string id, GameFormModel newData)
     {
+
+
         Game toEdit = await this.gameRepository.GetOneAsync(id, false);
 
         if (toEdit is null)
@@ -133,9 +137,6 @@ public class GameService : IGameService
         };
 
 
-
-
-
         await this.gameRepository.UpdateOneAsync(editedGame);
         await this.gameRepository.SaveAsync();
 
@@ -144,7 +145,30 @@ public class GameService : IGameService
 
     public async Task DeleteGameAsync(string id)
     {
-        throw new NotImplementedException();
+        await this.gameRepository.DeleteOneAsync(Guid.Parse(id));
+        await this.gameRepository.SaveAsync();
+    }
+
+
+    public async Task<IEnumerable<GameViewModel>> GetFavoritesAsync(string userId)
+    {
+        ICollection<Game> favoriteGames = await this.userService.GetApplicationUserFavoritesByIdAsync(userId);
+
+        IEnumerable<GameViewModel> favoriteGamesViewModel = favoriteGames.Select(g => new GameViewModel()
+        {
+            Id = g.Id.ToString(),
+            Name = g.Name,
+            Description = g.Description,
+            Developer = g.Developer,
+            Publisher = g.Publisher,
+            YearOfPublishing = g.YearOfPublishing,
+            PlatformId = g.PlatformId.ToString(),
+            Platform = g.Platform.Name,
+            Genre = g.Genre.Name.ToString(),
+            GenreId = g.GenreId.ToString(),
+            ImageUrl = g.ImageUrl,
+        });
+        return favoriteGamesViewModel;
     }
 
     private async Task<string> UploadFile(IFormFile file)
