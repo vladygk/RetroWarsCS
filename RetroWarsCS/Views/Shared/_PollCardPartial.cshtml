@@ -1,0 +1,29 @@
+﻿@model PollViewModel
+
+<div class="d-flex justify-content-center align-items-center">
+
+    <div class="card m-5 bg-info" style="width: 18rem; height: 37rem;">
+
+        <div class="card-body ">
+            <div class="d-flex justify-content-center">
+                <img src=@Model.FirstGameImageUrl class="card-img-top " style="height: 15vh; width: auto" alt=@Model.FirstGameName>
+            </div>
+            <h5 class="card-title text-dark">@Model.FirstGameName</h5>
+            
+        </div>
+    </div>
+
+    <div class="card m-5 bg-info" style="width: 18rem; height: 37rem;">
+
+        <div class="card-body ">
+            <div class="d-flex justify-content-center">
+                <img src=@Model.SecondGameImageUrl class="card-img-top " style="height: 15vh; width: auto" alt=@Model.SecondGameName>
+            </div>
+            <h5 class="card-title text-dark">@Model.SecondGameName</h5>
+           
+            
+        </div>
+    </div>
+    <a asp-controller="Poll" asp-action="Details" style="color: #FF01FF" asp-route-id="@Model.Id" class="btn m-2"> Vote</a>
+</div>
+

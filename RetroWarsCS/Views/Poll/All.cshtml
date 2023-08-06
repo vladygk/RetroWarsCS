@@ -1,0 +1,26 @@
+﻿@model IEnumerable<PollViewModel>
+@{
+    ViewData["Title"] = "All Polls";
+}
+
+
+<div class="container mx-auto mt-4">
+    <div class="row">
+
+        @if (Model.Any())
+        {
+            @foreach (PollViewModel viewModel in Model)
+            {
+                <div class="col-md-4">
+                    @await Html.PartialAsync("_PollCardPartial",viewModel)
+                </div>
+            }
+        }
+        else
+        {
+            <h5>No polls added to RetroWars.</h5>
+        }
+
+
+    </div>
+</div>

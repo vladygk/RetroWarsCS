@@ -15,4 +15,6 @@ public interface IGameService
     public Task DeleteGameAsync(string id);
 
     public Task<IEnumerable<GameViewModel>> GetFavoritesAsync(string userId);
+
+    public Task<IEnumerable<PollSelectGameViewModel>> GetAllPollSelectGameViewModels();
 }

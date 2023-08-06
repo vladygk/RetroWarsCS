@@ -171,6 +171,19 @@ public class GameService : IGameService
         return favoriteGamesViewModel;
     }
 
+    public async Task<IEnumerable<PollSelectGameViewModel>> GetAllPollSelectGameViewModels()
+    {
+        IEnumerable<Game> allGames = await this.gameRepository.GetAllAsync();
+
+        IEnumerable<PollSelectGameViewModel> models = allGames.Select(g => new PollSelectGameViewModel()
+        {
+            Id = g.Id.ToString(),
+            Name = g.Name,
+        });
+
+        return models;
+    }
+
     private async Task<string> UploadFile(IFormFile file)
     {
         string path = String.Empty;
