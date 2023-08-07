@@ -1,4 +1,7 @@
-﻿namespace RetroWars.Web.Controllers;
+﻿using RetroWars.Common.Enums;
+using RetroWars.Web.Infrastructure.Extensions;
+
+namespace RetroWars.Web.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using RetroWars.Services.Data.Contracts;
@@ -73,6 +76,49 @@ public class PollController : Controller
             TempData[ErrorMessage] = "Error: Can't create poll.";
             return RedirectToAction("All", "Poll");
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Vote(string id)
+    {
+        try
+        {
+            PollViewModel model = await this.pollService.GetOnePollAsync(id);
+
+            return this.View(model);
+
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Cant load voting screen";
+            return RedirectToAction("All", "Poll");
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Vote(PollViewModel model)
+    {
+        try
+        {
+            PollViewModel poll = await this.pollService.GetOnePollAsync(model.Id.ToString());
+
+            VoteOptions choice = model.Vote == poll.FirstGameId
+                ? VoteOptions.VoteForFirst
+                : VoteOptions.VoteForSecond;
+
+
+            string userId = User.GetId()!;
+            await this.pollService.MarkUserAsVoted(poll.Id.ToString(), userId);
+
+            PollViewModel votedPoll = await this.pollService.IncreaseVotes(model.Id.ToString(), choice);
+            return RedirectToAction("Vote", "Poll", votedPoll);
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Cant  vote";
+            return RedirectToAction("All", "Poll");
+        }
+        return View(model);
     }
 }
 

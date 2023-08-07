@@ -1,4 +1,5 @@
 ﻿namespace RetroWars.Services.Data;
+using Common.Enums;
 using RetroWars.Data.Models;
 using Retrowars.Data.Repository;
 using Contracts;
@@ -8,9 +9,11 @@ using Web.ViewModels.Poll;
 public class PollService : IPollService
 {
     private readonly IRepository<Poll> pollRepository;
-    public PollService(IRepository<Poll> pollRepository)
+    private readonly  IRepository<ApplicationUser> applicationUserRepository;
+    public PollService(IRepository<Poll> pollRepository, IRepository<ApplicationUser> applicationUserRepository)
     {
         this.pollRepository = pollRepository;
+        this.applicationUserRepository = applicationUserRepository;
     }
     public async Task<IEnumerable<PollViewModel>> GetAllPollsAsync()
     {
@@ -31,10 +34,43 @@ public class PollService : IPollService
             SecondGamePublisher = p.SecondGame.Publisher,
             IsActive = p.IsActive,
             VotesForFirst = p.VotesForFirst,
-            VotesForSecond = p.VotesForSecond
+            VotesForSecond = p.VotesForSecond,
+            Voters = p.Voters.Select(v => v.Id)
         });
 
         return allPollViewModels;
+    }
+
+    public async Task<PollViewModel> GetOnePollAsync(string id)
+    {
+        Poll? poll = await this.pollRepository.GetOneAsync(id, false);
+
+        if (poll is null)
+        {
+            throw new ArgumentException("Invalid poll id.");
+        }
+
+        PollViewModel model = new PollViewModel()
+        {
+
+            Id = poll.Id,
+            FirstGameId = poll.FirstGameId,
+            SecondGameId = poll.SecondGameId,
+            FirstGameName = poll.FirstGame.Name,
+            SecondGameName = poll.SecondGame.Name,
+            FirstGameImageUrl = poll.FirstGame.ImageUrl,
+            SecondGameImageUrl = poll.SecondGame.ImageUrl,
+            FirstGamePlatform = poll.FirstGame.Platform.Name,
+            FirstGamePublisher = poll.FirstGame.Publisher,
+            SecondGamePlatform = poll.SecondGame.Platform.Name,
+            SecondGamePublisher = poll.SecondGame.Publisher,
+            IsActive = poll.IsActive,
+            VotesForFirst = poll.VotesForFirst,
+            VotesForSecond = poll.VotesForSecond,
+            Voters = poll.Voters.Select(v => v.Id)
+        };
+
+        return model;
     }
 
     public async Task CreatePollAsync(PollFormModel formModel)
@@ -50,6 +86,75 @@ public class PollService : IPollService
 
         await this.pollRepository.AddAsync(newPoll);
         await this.pollRepository.SaveAsync();
+    }
+
+
+
+    public async Task<PollViewModel> IncreaseVotes(string id, VoteOptions choice)
+    {
+        Poll? poll = await this.pollRepository.GetOneAsync(id, false);
+
+        if (poll is null)
+        {
+            throw new ArgumentException("Invalid poll id");
+        }
+
+        if (choice == VoteOptions.VoteForFirst)
+        {
+            poll.VotesForFirst++;
+           await  this.pollRepository.SaveAsync();
+           return new PollViewModel()
+           {
+               Id = poll.Id,
+               FirstGameId = poll.FirstGameId,
+               SecondGameId = poll.SecondGameId,
+               FirstGameName = poll.FirstGame.Name,
+               SecondGameName = poll.SecondGame.Name,
+               FirstGameImageUrl = poll.FirstGame.ImageUrl,
+               SecondGameImageUrl = poll.SecondGame.ImageUrl,
+               FirstGamePlatform = poll.FirstGame.Platform.Name,
+               FirstGamePublisher = poll.FirstGame.Publisher,
+               SecondGamePlatform = poll.SecondGame.Platform.Name,
+               SecondGamePublisher = poll.SecondGame.Publisher,
+               IsActive = poll.IsActive,
+               VotesForFirst = poll.VotesForFirst,
+               VotesForSecond = poll.VotesForSecond,
+               Voters = poll.Voters.Select(v=>v.Id)
+           };
+        }
+        poll.VotesForSecond++;
+        await this.pollRepository.SaveAsync();
+        return new PollViewModel()
+        {
+            Id = poll.Id,
+            FirstGameId = poll.FirstGameId,
+            SecondGameId = poll.SecondGameId,
+            FirstGameName = poll.FirstGame.Name,
+            SecondGameName = poll.SecondGame.Name,
+            FirstGameImageUrl = poll.FirstGame.ImageUrl,
+            SecondGameImageUrl = poll.SecondGame.ImageUrl,
+            FirstGamePlatform = poll.FirstGame.Platform.Name,
+            FirstGamePublisher = poll.FirstGame.Publisher,
+            SecondGamePlatform = poll.SecondGame.Platform.Name,
+            SecondGamePublisher = poll.SecondGame.Publisher,
+            IsActive = poll.IsActive,
+            VotesForFirst = poll.VotesForFirst,
+            VotesForSecond = poll.VotesForSecond,
+            Voters = poll.Voters.Select(v => v.Id)
+        };
+
+    }
+
+    public async Task MarkUserAsVoted(string id, string userId)
+    {
+       Poll? poll  = await this.pollRepository.GetOneAsync(id, false);
+       ApplicationUser? user = await this.applicationUserRepository.GetOneAsync(userId, false);
+       if (poll is null || user is null)
+       {
+           throw new ArgumentException("Invalid poll or user id.");
+       }
+       poll.Voters.Add(user);
+       await this.pollRepository.SaveAsync();
     }
 }
 

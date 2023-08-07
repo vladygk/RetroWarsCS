@@ -24,5 +24,7 @@ public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
     public string LastName { get; set; } = null!;
 
     public virtual ICollection<Game> FavoriteGames { get; set; }
+
+    public virtual ICollection<Poll> Polls { get; set; }
 }
 

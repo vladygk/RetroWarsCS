@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RetroWars.Data.Models;
+using Models;
 
 public class PollEntityConfiguration : IEntityTypeConfiguration<Poll>
 {
@@ -21,6 +21,10 @@ public class PollEntityConfiguration : IEntityTypeConfiguration<Poll>
         builder
             .Property(p => p.IsActive)
             .HasDefaultValue(true);
+
+        builder
+            .HasMany(p => p.Voters)
+            .WithMany(au => au.Polls);
     }
 }
 

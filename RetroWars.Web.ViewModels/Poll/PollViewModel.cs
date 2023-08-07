@@ -2,6 +2,10 @@
 
 public class PollViewModel
 {
+    public PollViewModel()
+    {
+        this.Voters = new HashSet<Guid>();
+    }
     public Guid Id { get; set; }
 
     public bool IsActive { get; set; }
@@ -27,5 +31,9 @@ public class PollViewModel
     public int VotesForFirst { get; set; }
 
     public int VotesForSecond { get; set; }
+
+    public Guid Vote { get; set; }
+
+    public IEnumerable<Guid> Voters { get; set; }
 }
 

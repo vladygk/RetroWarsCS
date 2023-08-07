@@ -1,0 +1,57 @@
+﻿@model PollViewModel
+@using RetroWars.Web.Infrastructure.Extensions;
+@{
+    ViewData["Title"] = "Voting page";
+    Guid id = Guid.Parse(User.GetId()!);
+    bool hasVoted = Model.Voters.Contains(id);
+}
+
+<div class="d-flex flex-column justify-content-center align-items-center w-75 h-100">
+    <h2 class="m-5">Choose your destiny!</h2>
+    <form method="POST" class="border w-75 p-3 d-flex flex-column align-items-center">
+        <div class="d-flex justify-content-center align-items-center mt-3 mb-3">
+            <div class="me-5 w-50">@Model.FirstGameName</div>
+            <div class="w-50">@Model.SecondGameName</div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-3 mb-3">
+            <div class="me-5 w-50">
+                <img style="width: 10vw; height: 20vh" src="@Model.FirstGameImageUrl" />
+            </div>
+            <div class=" w-50">
+                <img style="width: 10vw; height: 20vh" src="@Model.SecondGameImageUrl" />
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-3 mb-3">
+            <div class="me-5 w-50">@Model.FirstGamePlatform</div>
+            <div class=" w-50">@Model.SecondGamePlatform</div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mt-3 mb-3">
+            <div class="me-5 w-50">@Model.FirstGamePublisher</div>
+            <div class=" w-50">@Model.SecondGamePublisher</div>
+        </div>
+        @if (!hasVoted)
+        {
+            <div>
+                <div class="form-check">
+                    <input asp-for="Vote" type="radio" class="form-check-input" id="radio1" name="Vote" value="@Model.FirstGameId" checked>
+                    <label asp-for="Vote" class="form-check-label" for="radio1">@Model.FirstGameName</label>
+                </div>
+                <div class="form-check">
+                    <input asp-for="Vote" type="radio" class="form-check-input" id="radio2" name="Vote" value="@Model.SecondGameId">
+                    <label asp-for="Vote" class="form-check-label" for="radio2">@Model.SecondGameName</label>
+                </div>
+            </div>
+        }
+        else
+        {
+            //TODO Add Vote results
+        }
+        <div class="d-flex flex-column justify-content-center align-items-center mt-3 mb-3">
+        @if (!hasVoted)
+        {
+            <button type="submit" class="btn btn-danger">Vote!</button>
+        }
+            <a class="btn m-2 " style="color: #FF01FF" asp-controller="Poll" asp-action="All">Back</a>
+        </div>
+    </form>
+</div>

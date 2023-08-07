@@ -9,6 +9,7 @@ public class Poll : IBaseEntity
     public Poll()
     {
         this.Id = Guid.NewGuid();
+        this.Voters = new HashSet<ApplicationUser>();
     }
 
     [Key]
@@ -30,5 +31,7 @@ public class Poll : IBaseEntity
     [Required] public int VotesForFirst { get; set; }
 
     [Required] public int VotesForSecond { get; set; }
+
+    public virtual ICollection<ApplicationUser> Voters { get; set; }
 }
 

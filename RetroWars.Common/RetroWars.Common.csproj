@@ -20,4 +20,8 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.20" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
+
 </Project>
