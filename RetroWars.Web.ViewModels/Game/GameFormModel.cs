@@ -25,10 +25,10 @@ public class GameFormModel
     [StringLength(MaxPublisherNameLength, MinimumLength = MinPublisherNameLength)]
     public string Publisher { get; set; } = null!;
 
-    [Required]
-    public IFormFile File { get; set; }
+    
+    public IFormFile? File { get; set; }
 
-    [Range(typeof(decimal), MinYear, MaxYear)]
+    [Range(typeof(int), MinYear, MaxYear)]
     public int YearOfPublishing { get; set; }
 
     public Guid GenreId { get; set; }
