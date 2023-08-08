@@ -42,7 +42,7 @@ public class PollController : AuthorizationController
                 MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(PollsCacheDurationMinutes));
 
-                this.cache.Set(GamesCacheKey, allPolls, cacheOptions);
+                this.cache.Set(PollsCacheKey, allPolls, cacheOptions);
             }
 
 

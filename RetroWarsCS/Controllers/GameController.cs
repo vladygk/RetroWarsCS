@@ -33,7 +33,7 @@ public class GameController : AuthorizationController
             IEnumerable<GameViewModel> allGames =
                 this.cache.Get<IEnumerable<GameViewModel>>(GamesCacheKey);
 
-            if (allGames == null)
+            if (allGames is null)
             {
                 allGames = await this.gameService.GetAllGamesAsync();
 
