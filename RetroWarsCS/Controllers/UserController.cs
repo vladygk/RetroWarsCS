@@ -1,4 +1,5 @@
-﻿using RetroWars.Data.Models;
+﻿using Griesoft.AspNetCore.ReCaptcha;
+using RetroWars.Data.Models;
 
 namespace RetroWars.Web.Controllers;
 
@@ -88,6 +89,7 @@ public class UserController : Controller
     }
 
     [HttpPost]
+    [ValidateRecaptcha]
     public async Task<IActionResult> Login(LoginFormModel model)
     {
         if (!ModelState.IsValid)

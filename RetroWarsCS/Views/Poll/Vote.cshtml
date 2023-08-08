@@ -1,9 +1,13 @@
 ﻿@model PollViewModel
+@inject IPollService PollService;
 @using RetroWars.Web.Infrastructure.Extensions;
+@using RetroWars.Services.Data.Contracts
 @{
     ViewData["Title"] = "Voting page";
     Guid id = Guid.Parse(User.GetId()!);
     bool hasVoted = Model.Voters.Contains(id);
+    string resultsFirst = $"{PollService.GetResults(Model.VotesForFirst, Model.VotesForSecond)[0]:f2}%";
+    string resultsSecond = $"{PollService.GetResults(Model.VotesForFirst, Model.VotesForSecond)[1]:f2}%";
 }
 
 <div class="d-flex flex-column justify-content-center align-items-center w-75 h-100">
@@ -44,7 +48,10 @@
         }
         else
         {
-            //TODO Add Vote results
+            <div class="d-flex flex-row">
+                <div class="me-5">@resultsFirst</div>
+                <div>@resultsSecond</div>
+            </div>
         }
         <div class="d-flex flex-column justify-content-center align-items-center mt-3 mb-3">
         @if (!hasVoted)

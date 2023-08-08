@@ -4,7 +4,7 @@
     ViewData["Title"] = "Login Page";
 }
 
-<form method="post" class="vh-100 ">
+<form id="login" method="post" class="vh-100 ">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -30,8 +30,8 @@
                             </div>
 
                             <p class="small mb-5 pb-lg-2 "><a class="text-white-5" href="#">Forgot password :( Well, too bad</a></p>
-
-                            <button type="submit" class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+                            
+                            <button re-invisible form-id="login" type="submit" class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
 
                         </div>
 
@@ -49,5 +49,6 @@
 </form>
 
 @section Scripts {
+    <recaptcha-script />
     <partial name="_ValidationScriptsPartial" />
 }

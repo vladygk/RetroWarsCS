@@ -1,117 +1,118 @@
+namespace RetroWars.Web;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Retrowars.Data.Repository;
-using RetroWars.Data;
-using RetroWars.Data.Models;
-using RetroWars.Services.Data;
+using Data;
+using Data.Models;
 using RetroWars.Services.Data.Contracts;
-using RetroWars.Web.Infrastructure.Extensions;
+using Infrastructure.Extensions;
+using static Common.GeneralApplicationConstants;
 
-namespace RetroWarsCS
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        // Add services to the container.
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            builder.Services.AddDbContext<RetroWarsDbContext>(options =>
-                options.UseSqlServer(connectionString)
-                    .UseLazyLoadingProxies());
+        builder.Services.AddDbContext<RetroWarsDbContext>(options =>
+            options.UseSqlServer(connectionString)
+                .UseLazyLoadingProxies());
 
-            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); //Add repository to IoC
+        builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); //Add repository to IoC
 
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
-                {
-                    options.SignIn.RequireConfirmedAccount =
-                        builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
-                    options.Password.RequireLowercase =
-                        builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
-                    options.Password.RequireUppercase =
-                        builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
-                    options.Password.RequireNonAlphanumeric =
-                        builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
-                    options.Password.RequiredLength =
-                        builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
-
-                })
-                .AddRoles<IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<RetroWarsDbContext>();
-
-
-            builder.Services.AddApplicationServices(typeof(IUserService));
-
-            builder.Services.AddMemoryCache();
-            builder.Services.AddResponseCaching();
-
-            builder.Services.ConfigureApplicationCookie(cfg =>
+        builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
-                cfg.LoginPath = "/User/Login";
-                cfg.AccessDeniedPath = "/Home/Error/401";
+                options.SignIn.RequireConfirmedAccount =
+                    builder.Configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+                options.Password.RequireLowercase =
+                    builder.Configuration.GetValue<bool>("Identity:Password:RequireLowercase");
+                options.Password.RequireUppercase =
+                    builder.Configuration.GetValue<bool>("Identity:Password:RequireUppercase");
+                options.Password.RequireNonAlphanumeric =
+                    builder.Configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+                options.Password.RequiredLength =
+                    builder.Configuration.GetValue<int>("Identity:Password:RequiredLength");
+
+            })
+            .AddRoles<IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<RetroWarsDbContext>();
+
+
+        builder.Services.AddApplicationServices(typeof(IUserService));
+        builder.Services.AddRecaptchaService();
+
+        builder.Services.AddMemoryCache();
+        builder.Services.AddResponseCaching();
+
+        builder.Services.ConfigureApplicationCookie(cfg =>
+        {
+            cfg.LoginPath = "/User/Login";
+            cfg.AccessDeniedPath = "/Home/Error/401";
+        });
+
+
+
+        builder.Services.AddControllersWithViews()
+            .AddMvcOptions(
+            opt =>
+            {
+                opt.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
 
-          
+        var app = builder.Build();
 
-            builder.Services.AddControllersWithViews()
-                .AddMvcOptions(
-                opt =>
-                {
-                    opt.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
-                });
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseMigrationsEndPoint();
+            app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            app.UseExceptionHandler("/Home/Error/500");
+            app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
 
-            var app = builder.Build();
-
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseMigrationsEndPoint();
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error/500");
-                app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
-
-                app.UseHsts();
-            }
+            app.UseHsts();
+        }
 
 
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
 
-            app.UseRouting();
+        app.UseRouting();
 
-            app.UseResponseCaching();
+        app.UseResponseCaching();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
-            app.UseEndpoints(config =>
-            {
-                config.MapControllerRoute(
-                    name: "areas",
-                    pattern: "/{area:exists}/{controller=Home}/{action=Index}/{id?}"
+        app.SeedAdministrator(AdminEmail);
+
+        app.UseEndpoints(config =>
+        {
+            config.MapControllerRoute(
+                name: "areas",
+                pattern: "/{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            );
+
+            config.MapControllerRoute(
+                name: "ProtectingUrlRoute",
+                pattern: "/{controller}/{action}/{id}/{information}"
+                // defaults: new { Controller = "Category", Action = "Details" }
                 );
 
-                config.MapControllerRoute(
-                    name: "ProtectingUrlRoute",
-                    pattern: "/{controller}/{action}/{id}/{information}"
-                   // defaults: new { Controller = "Category", Action = "Details" }
-                    );
+            config.MapDefaultControllerRoute();
 
-                config.MapDefaultControllerRoute();
+            config.MapRazorPages();
+        });
 
-                config.MapRazorPages();
-            });
-
-            app.Run();
-        }
+        app.Run();
     }
 }

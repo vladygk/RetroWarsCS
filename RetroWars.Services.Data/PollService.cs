@@ -19,7 +19,7 @@ public class PollService : IPollService
     {
         IEnumerable<Poll> allPolls = await this.pollRepository.GetAllAsync();
 
-        IEnumerable<PollViewModel> allPollViewModels = allPolls.Select(p => new PollViewModel()
+        IEnumerable<PollViewModel> allPollViewModels = allPolls.Where(p=>p.IsActive).Select(p => new PollViewModel()
         {
             Id = p.Id,
             FirstGameId = p.FirstGameId,
@@ -155,6 +155,16 @@ public class PollService : IPollService
        }
        poll.Voters.Add(user);
        await this.pollRepository.SaveAsync();
+    }
+
+    public double[] GetResults(int votesForFirst, int votesForSecond)
+    {
+        double[] result = new double[2];
+
+        result[0] = (double)votesForFirst/(votesForFirst+votesForSecond);
+        result[1] = (double)votesForSecond/(votesForSecond+votesForFirst);
+
+        return result;
     }
 }
 

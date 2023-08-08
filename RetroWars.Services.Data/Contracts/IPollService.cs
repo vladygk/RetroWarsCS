@@ -13,4 +13,6 @@ public interface IPollService
     public Task<PollViewModel> IncreaseVotes(string id, VoteOptions choice);
 
     public Task MarkUserAsVoted(string id, string userId);
+
+    public double[] GetResults(int votesForFirst, int votesForSecond);
 }
