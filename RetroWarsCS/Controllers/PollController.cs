@@ -9,7 +9,7 @@ using ViewModels.Poll;
 using ViewModels.Game;
 using static Common.NotificationMessagesConstants;
 
-public class PollController : Controller
+public class PollController : AuthorizationController
 {
     private readonly IPollService pollService;
     private readonly IGameService gameService;

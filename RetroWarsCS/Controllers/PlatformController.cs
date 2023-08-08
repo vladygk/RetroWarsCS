@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using static Common.NotificationMessagesConstants;
 
-public class PlatformController : Controller
+public class PlatformController : AuthorizationController
 {
     private readonly IPlatformService platformService;
     public PlatformController(IPlatformService platformService)

@@ -1,13 +1,12 @@
-﻿using RetroWars.Web.Infrastructure.Extensions;
-
-namespace RetroWars.Web.Controllers;
+﻿namespace RetroWars.Web.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using RetroWars.Web.ViewModels.Game;
+using Infrastructure.Extensions;
+using ViewModels.Game;
 using RetroWars.Services.Data.Contracts;
 using static Common.NotificationMessagesConstants;
 
-public class GameController : Controller
+public class GameController : AuthorizationController
 {
     private readonly IGameService gameService;
     private readonly IGenreService genreService;
