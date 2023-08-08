@@ -3,9 +3,13 @@ public static class GeneralApplicationConstants
 {
     public const string AdminRoleName = "Administrator";
     public const string AdminEmail = "admin@admin.bg";
+    public const string AdminAreaName = "Admin";
 
     public const string GamesCacheKey = "GamesCache";
     public const int GamesCacheDurationMinutes = 5;
+
+    public const string PollsCacheKey = "PollsCache";
+    public const int PollsCacheDurationMinutes = 5;
 
     public const string DefaultFireBaseStorageFolder = "Images";
     public const int MaxNumberOfGamesToDisplayForPlatform = 10;

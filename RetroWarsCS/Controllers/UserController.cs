@@ -1,13 +1,11 @@
-﻿using Griesoft.AspNetCore.ReCaptcha;
-using RetroWars.Data.Models;
+﻿namespace RetroWars.Web.App.Controllers;
 
-namespace RetroWars.Web.Controllers;
-
+using Griesoft.AspNetCore.ReCaptcha;
+using Data.Models;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 
 using Microsoft.Extensions.Caching.Memory;
 using ViewModels.User;

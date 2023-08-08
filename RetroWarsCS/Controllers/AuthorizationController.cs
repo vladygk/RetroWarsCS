@@ -1,4 +1,4 @@
-﻿namespace RetroWars.Web.Controllers;
+﻿namespace RetroWars.Web.App.Controllers;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

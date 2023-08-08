@@ -8,5 +8,7 @@
 
         public string FullName { get; set; } = null!;
 
+        public bool IsAdmin { get; set; }
+
        
 }

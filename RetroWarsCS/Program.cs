@@ -1,4 +1,4 @@
-namespace RetroWars.Web;
+namespace RetroWars.Web.App;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -100,6 +100,7 @@ public class Program
             config.MapControllerRoute(
                 name: "areas",
                 pattern: "/{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                
             );
 
             config.MapControllerRoute(
@@ -107,6 +108,7 @@ public class Program
                 pattern: "/{controller}/{action}/{id}/{information}"
                 // defaults: new { Controller = "Category", Action = "Details" }
                 );
+
 
             config.MapDefaultControllerRoute();
 

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PollAdminViewModel>
+@using static RetroWars.Common.GeneralApplicationConstants;
+
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">Is Active</th>
+            <th scope="col">First Game</th>
+            <th scope="col">Second Game</th>
+            <th scope="col">Publisher First Game</th>
+            <th scope="col">Publisher Second Game</th>
+            <th scope="col">Platform First Game</th>
+            <th scope="col">Platform Second Game</th>
+            <th scope="col">Votes First Game</th>
+            <th scope="col">Votes Second Game</th>
+            <th scope="col">Total Votes</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var poll in Model)
+        {
+            <tr scope="row" class="table-striped">
+                <td>@poll.IsActive</td>
+                <td>@poll.FirstGameName</td>
+                <td>@poll.SecondGameName</td>
+
+                <td>@poll.FirstGamePublisher</td>
+                <td>@poll.SecondGamePublisher</td>
+
+                <td>@poll.FirstGamePlatform</td>
+                <td>@poll.SecondGamePlatform</td>
+
+                <td>@poll.VotesForFirst</td>
+                <td>@poll.VotesForSecond</td>
+
+                <td>@poll.TotalVotes</td>
+                
+                @if (@poll.IsActive == false)
+                {
+                    <td><a asp-controller="Poll" asp-area="@AdminAreaName" asp-action="Activate" asp-route-id="@poll.Id">Activate</a></td>
+                }
+                
+            </tr>
+
+        }
+    </tbody>
+</table>

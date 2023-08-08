@@ -1,18 +1,23 @@
-﻿using RetroWars.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using RetroWars.Data.Models;
 using Retrowars.Data.Repository;
-using RetroWars.Services.Data.Contracts;
-using RetroWars.Web.ViewModels.User;
-
 namespace RetroWars.Services.Data;
+
+using Contracts;
+using Web.ViewModels.User;
+using static Common.GeneralApplicationConstants;
+
 
 public class UserService : IUserService
 {
     private readonly IRepository<ApplicationUser> applicationUserRepository;
     private readonly  IRepository<Game> gameRepository;
-    public UserService(IRepository<ApplicationUser> applicationUserRepository, IRepository<Game> gameRepository)
+    private readonly UserManager<ApplicationUser> userManager;
+    public UserService(IRepository<ApplicationUser> applicationUserRepository, IRepository<Game> gameRepository, UserManager<ApplicationUser> userManager)
     {
         this.applicationUserRepository = applicationUserRepository;
         this.gameRepository = gameRepository;
+        this.userManager = userManager;
     }
 
     public async Task<string> GetFullNameByEmailAsync(string email)
@@ -71,6 +76,18 @@ public class UserService : IUserService
         return user.FavoriteGames;
     }
 
+    public async Task MakeAdmin(string userId)
+    {
+      ApplicationUser? user = await  this.applicationUserRepository.GetOneAsync(userId, false);
+
+      if (user == null)
+      {
+          throw new ArgumentException("Invalid Id");
+      }
+      await userManager.AddToRoleAsync(user, AdminRoleName);
+
+    }
+
     public async Task<string> GetFullNameByIdAsync(string userId)
     {
         ApplicationUser? user = await this.applicationUserRepository.GetOneAsync(userId, false);
@@ -86,13 +103,14 @@ public class UserService : IUserService
     {
         IEnumerable<ApplicationUser> allUsers = await this.applicationUserRepository
             .GetAllAsync();
-
+        
         IEnumerable<UserViewModel> allUsersViewModels =
             allUsers.Select(u => new UserViewModel()
             {
                 Id = u.Id.ToString(),
                 Email = u.Email,
-                FullName = u.FirstName + " " + u.LastName
+                FullName = u.FirstName + " " + u.LastName,
+                IsAdmin =  this.userManager.IsInRoleAsync(u, AdminRoleName).Result
             })
         .ToList();
 

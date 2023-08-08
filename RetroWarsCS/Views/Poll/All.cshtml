@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PollViewModel>
+﻿@model             IEnumerable<RetroWars.Web.ViewModels.Poll.PollViewModel>
 @{
     ViewData["Title"] = "All Polls";
 }
@@ -9,10 +9,10 @@
 
         @if (Model.Any())
         {
-            @foreach (PollViewModel viewModel in Model)
+            @foreach (RetroWars.Web.ViewModels.Poll.PollViewModel viewModel in Model)
             {
             <div class="row mb-5">
-                    @await Html.PartialAsync("_PollCardPartial",viewModel)
+                    @await Html.PartialAsync("_PollCardPartial", viewModel)
                 </div>
             }
         }

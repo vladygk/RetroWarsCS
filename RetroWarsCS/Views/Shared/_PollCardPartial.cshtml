@@ -1,4 +1,9 @@
-﻿@model PollViewModel
+﻿@using RetroWars.Web.Infrastructure.Extensions
+@model             RetroWars.Web.ViewModels.Poll.PollViewModel
+
+@{
+    bool isAdmin = User.IsAdmin();
+}
 
 <div  class="d-flex flex-column justify-content-center align-items-center border border-4 border-info " style="background-color: #ff01ff;">
     <div class="row d-flex flex-row" style="height: 48vh">
@@ -29,8 +34,12 @@
         </div>
     </div>
     
-    <div class="row d-flex justify-content-center mt-2">
-        <a asp-controller="Poll" asp-action="Vote" asp-route-id="@Model.Id" class="btn btn-warning mb-3 text-white"> Vote</a>
+    <div class="row d-flex justify-content-center mt-2 flex-column">
+        @if (isAdmin)
+        {
+            <a asp-controller="Poll" asp-action="DeactivatePoll" asp-route-id="@Model.Id" class="btn btn-warning mb-3 text-white"> Deactivate</a>
+        }
+        <a asp-controller="Poll" asp-action="Vote" asp-route-id="@Model.Id" class="btn btn-success mb-3 text-white"> Vote</a>
     </div>
 </div>
 

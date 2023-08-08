@@ -13,4 +13,6 @@ public interface IUserService
 
     public Task RemoveGameFromFavoritesAsync(string gameId, string userId);
     public Task<ICollection<Game>> GetApplicationUserFavoritesByIdAsync(string userId);
+
+    public Task MakeAdmin(string userId);
 }

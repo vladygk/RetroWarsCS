@@ -1,0 +1,29 @@
+﻿@model IEnumerable<UserViewModel>
+@using static RetroWars.Common.GeneralApplicationConstants;
+
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Email</th>
+            <th scope="col">Full Name</th>
+            
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var poll in Model)
+        {
+            <tr scope="row" class="table-striped">
+                <td>@poll.Id</td>
+                <td>@poll.Email</td>
+                <td>@poll.FullName</td>
+                @if (poll.IsAdmin == false)
+                {
+                    <td><a asp-controller="User" asp-action="MakeAdmin" asp-area="@AdminAreaName" asp-route-id="@poll.Id">Make an Admin</a></td>
+                }
+            </tr>
+
+        }
+    </tbody>
+</table>

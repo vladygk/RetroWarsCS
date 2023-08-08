@@ -1,4 +1,4 @@
-﻿namespace RetroWars.Web.Controllers;
+﻿namespace RetroWars.Web.App.Controllers;
 
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +7,7 @@ using ViewModels.Game;
 using RetroWars.Services.Data.Contracts;
 using static Common.NotificationMessagesConstants;
 using static Common.GeneralApplicationConstants;
+using Ganss.Xss;
 
 public class GameController : AuthorizationController
 {

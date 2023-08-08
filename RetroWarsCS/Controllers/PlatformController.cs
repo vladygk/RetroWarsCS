@@ -1,4 +1,4 @@
-﻿namespace RetroWars.Web.Controllers;
+﻿namespace RetroWars.Web.App.Controllers;
 
 using RetroWars.Services.Data.Contracts;
 using ViewModels.Platform;

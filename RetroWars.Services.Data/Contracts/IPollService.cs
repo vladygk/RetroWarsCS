@@ -1,5 +1,10 @@
-﻿namespace RetroWars.Services.Data.Contracts;
+﻿
+namespace RetroWars.Services.Data.Contracts;
+
+
+using Web.App.Areas.Admin.ViewModels;
 using Web.ViewModels.Poll;
+
 using Common.Enums;
 
 public interface IPollService
@@ -15,4 +20,11 @@ public interface IPollService
     public Task MarkUserAsVoted(string id, string userId);
 
     public double[] GetResults(int votesForFirst, int votesForSecond);
+
+    public Task<IEnumerable<PollViewModel>> GetAllActivePollsAsync();
+    public Task DeactivateAPoll(string id);
+
+    public Task ActivateAPoll(string id);
+
+    public Task<IEnumerable<PollAdminViewModel>> GetAllPollAdminViewModels();
 }

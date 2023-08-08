@@ -1,4 +1,6 @@
-﻿namespace RetroWars.Services.Data;
+﻿
+namespace RetroWars.Services.Data;
+using RetroWars.Web.App.Areas.Admin.ViewModels;
 using Common.Enums;
 using RetroWars.Data.Models;
 using Retrowars.Data.Repository;
@@ -19,7 +21,33 @@ public class PollService : IPollService
     {
         IEnumerable<Poll> allPolls = await this.pollRepository.GetAllAsync();
 
-        IEnumerable<PollViewModel> allPollViewModels = allPolls.Where(p=>p.IsActive).Select(p => new PollViewModel()
+        IEnumerable<PollViewModel> allPollViewModels = allPolls.Select(p => new PollViewModel()
+        {
+            Id = p.Id,
+            FirstGameId = p.FirstGameId,
+            SecondGameId = p.SecondGameId,
+            FirstGameName = p.FirstGame.Name,
+            SecondGameName = p.SecondGame.Name,
+            FirstGameImageUrl = p.FirstGame.ImageUrl,
+            SecondGameImageUrl = p.SecondGame.ImageUrl,
+            FirstGamePlatform = p.FirstGame.Platform.Name,
+            FirstGamePublisher = p.FirstGame.Publisher,
+            SecondGamePlatform = p.SecondGame.Platform.Name,
+            SecondGamePublisher = p.SecondGame.Publisher,
+            IsActive = p.IsActive,
+            VotesForFirst = p.VotesForFirst,
+            VotesForSecond = p.VotesForSecond,
+            Voters = p.Voters.Select(v => v.Id)
+        });
+
+        return allPollViewModels;
+    }
+
+    public async Task<IEnumerable<PollViewModel>> GetAllActivePollsAsync()
+    {
+        IEnumerable<Poll> allPolls = await this.pollRepository.GetAllAsync();
+
+        IEnumerable<PollViewModel> allPollViewModels = allPolls.Where(p => p.IsActive).Select(p => new PollViewModel()
         {
             Id = p.Id,
             FirstGameId = p.FirstGameId,
@@ -165,6 +193,57 @@ public class PollService : IPollService
         result[1] = (double)votesForSecond/(votesForSecond+votesForFirst);
 
         return result;
+    }
+
+
+    
+    public async Task DeactivateAPoll(string id)
+    {
+      Poll? poll = await  this.pollRepository.GetOneAsync(id, false);
+
+      if (poll is null)
+      {
+          throw new ArgumentException("Invalid id");
+      }
+
+      poll.IsActive = false;
+      await this.pollRepository.SaveAsync();
+    }
+      
+    public async Task ActivateAPoll(string id)
+    {
+        Poll? poll = await this.pollRepository.GetOneAsync(id, false);
+
+        if (poll is null)
+        {
+            throw new ArgumentException("Invalid id");
+        }
+
+        poll.IsActive = true;
+        await this.pollRepository.SaveAsync();
+    }
+
+    public async Task<IEnumerable<PollAdminViewModel>> GetAllPollAdminViewModels()
+    {
+        IEnumerable<Poll> allPolls = await this.pollRepository.GetAllAsync();
+
+        IEnumerable<PollAdminViewModel> allPollViewModels = allPolls.Select(p => new PollAdminViewModel()
+        {
+            Id = p.Id,
+            SecondGameId = p.SecondGameId,
+            FirstGameName = p.FirstGame.Name,
+            SecondGameName = p.SecondGame.Name,
+            FirstGamePlatform = p.FirstGame.Platform.Name,
+            FirstGamePublisher = p.FirstGame.Publisher,
+            SecondGamePlatform = p.SecondGame.Platform.Name,
+            SecondGamePublisher = p.SecondGame.Publisher,
+            IsActive = p.IsActive,
+            VotesForFirst = p.VotesForFirst,
+            VotesForSecond = p.VotesForSecond,
+            
+        });
+
+        return allPollViewModels;
     }
 }
 

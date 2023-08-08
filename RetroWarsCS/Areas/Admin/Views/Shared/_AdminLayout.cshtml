@@ -18,7 +18,7 @@
     <title>@ViewData["Title"] - RetroWars</title>
     <link rel="icon" type="image/x-icon" href="~/icon.png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
   
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -39,39 +39,19 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Back_To_Home</a>
                         </li>
-                        @if (isAuthenticated)
+                        @if (isAuthenticated && isAdmin)
                         {
-                            <li>
-                                <a class=" text-primary btn "  asp-area="" asp-controller="Game" asp-action="All">Gallery</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="@AdminAreaName" asp-controller="Poll" asp-action="All">Polls</a>
                             </li>
-                            <li>
-                                <a class=" text-warning btn" asp-area="" asp-controller="Game" asp-action="Add">Add_Game</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="@AdminAreaName" asp-controller="User" asp-action="All">Users</a>
                             </li>
-                            <li>
-                                <a class=" btn" style="color: #FF01FF" asp-area="" asp-controller="Poll" asp-action="All">Polls</a>
-                            </li>
-                            <li>
-                                <a class=" text-white btn" asp-area="" asp-controller="Poll" asp-action="Create">Create_Poll</a>
-                            </li>
-                            <li>
-                                <a class=" text-info btn" asp-area="" asp-controller="Game" asp-action="Favorites">Favorites</a>
-                            </li>
-                            <li>
-                                <a class=" text-success btn" asp-area="" asp-controller="Platform" asp-action="All">All_Platforms</a>
-                            </li>
-
-                            @if (isAdmin)
-                            {
-                                <li>
-                                    <a class="btn" style="color: #32CD32" asp-area="@AdminAreaName" asp-controller="Poll" asp-action="All">Admin_Panel</a>
-                                </li>
-                            }
                         }
                     </ul>
-                    <partial name="_LoginPartial" />
+                    
                 </div>
             </div>
         </nav>

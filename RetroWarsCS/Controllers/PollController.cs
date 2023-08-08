@@ -1,22 +1,29 @@
-﻿using RetroWars.Common.Enums;
-using RetroWars.Web.Infrastructure.Extensions;
+﻿namespace RetroWars.Web.App.Controllers;
 
-namespace RetroWars.Web.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Common.Enums;
+using Infrastructure.Extensions;
+
 
 using Microsoft.AspNetCore.Mvc;
 using RetroWars.Services.Data.Contracts;
 using ViewModels.Poll;
-using ViewModels.Game;
+
 using static Common.NotificationMessagesConstants;
+using static Common.GeneralApplicationConstants;
+using Microsoft.Extensions.Caching.Memory;
+using RetroWars.Web.ViewModels.Game;
 
 public class PollController : AuthorizationController
 {
     private readonly IPollService pollService;
     private readonly IGameService gameService;
-    public PollController(IPollService pollService, IGameService gameService)
+    private readonly IMemoryCache cache;
+    public PollController(IPollService pollService, IGameService gameService, IMemoryCache cache)
     {
         this.pollService = pollService;
         this.gameService = gameService;
+        this.cache = cache;
     }
 
     [HttpGet]
@@ -24,8 +31,22 @@ public class PollController : AuthorizationController
     {
         try
         {
-            IEnumerable<PollViewModel> viewModels = await this.pollService.GetAllPollsAsync();
-            return this.View(viewModels);
+
+            IEnumerable<PollViewModel> allPolls =
+                this.cache.Get<IEnumerable<PollViewModel>>(PollsCacheKey);
+
+            if (allPolls == null)
+            {
+                allPolls = await this.pollService.GetAllActivePollsAsync();
+
+                MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(PollsCacheDurationMinutes));
+
+                this.cache.Set(GamesCacheKey, allPolls, cacheOptions);
+            }
+
+
+            return this.View(allPolls);
         }
         catch
         {
@@ -60,6 +81,8 @@ public class PollController : AuthorizationController
         {
             if (ModelState.IsValid)
             {
+                this.cache.Remove(PollsCacheKey);
+
                 await this.pollService.CreatePollAsync(model);
                 TempData[SuccessMessage] = "Success: Poll created.";
                 return RedirectToAction("All", "Poll");
@@ -115,10 +138,27 @@ public class PollController : AuthorizationController
         }
         catch
         {
-            TempData[ErrorMessage] = "Error: Cant  vote";
+            TempData[ErrorMessage] = "Error: Can't  vote.";
             return RedirectToAction("All", "Poll");
         }
         return View(model);
+    }
+
+    [HttpGet]
+    [Authorize(Roles = AdminRoleName)]
+    public async Task<IActionResult> DeactivatePoll(string id)
+    {
+        try
+        {
+          await  this.pollService.DeactivateAPoll(id);
+
+          return RedirectToAction("All", "Poll");
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Can't  deactivate.";
+            return RedirectToAction("All", "Poll");
+        }
     }
 }
 
