@@ -1,10 +1,12 @@
 ﻿namespace RetroWars.Web.Controllers;
 
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Mvc;
 using Infrastructure.Extensions;
 using ViewModels.Game;
 using RetroWars.Services.Data.Contracts;
 using static Common.NotificationMessagesConstants;
+using static Common.GeneralApplicationConstants;
 
 public class GameController : AuthorizationController
 {
@@ -12,19 +14,35 @@ public class GameController : AuthorizationController
     private readonly IGenreService genreService;
     private readonly IPlatformService platformService;
     private readonly IUserService userService;
-    public GameController(IGameService gameService, IGenreService genreService, IPlatformService platformService, IUserService userService)
+    private readonly IMemoryCache cache;
+    public GameController(IGameService gameService, IGenreService genreService, IPlatformService platformService, IUserService userService, IMemoryCache cache)
     {
         this.userService = userService;
         this.gameService = gameService;
         this.genreService = genreService;
         this.platformService = platformService;
+        this.cache = cache;
     }
+
     [HttpGet]
     public async Task<IActionResult> All()
     {
         try
         {
-            var allGames = await this.gameService.GetAllGamesAsync();
+            IEnumerable<GameViewModel> allGames =
+                this.cache.Get<IEnumerable<GameViewModel>>(GamesCacheKey);
+
+            if (allGames == null)
+            {
+                allGames = await this.gameService.GetAllGamesAsync();
+
+                MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(GamesCacheDurationMinutes));
+
+                this.cache.Set(GamesCacheKey, allGames, cacheOptions);
+            }
+
+           
             return this.View(allGames);
         }
         catch
@@ -59,6 +77,8 @@ public class GameController : AuthorizationController
     {
         try
         {
+            this.cache.Remove(GamesCacheKey);
+
             if (ModelState.IsValid)
             {
                 await this.gameService.CreateGameAsync(formModel);

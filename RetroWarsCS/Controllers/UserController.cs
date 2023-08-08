@@ -19,16 +19,15 @@ public class UserController : Controller
 {
     private readonly SignInManager<ApplicationUser> signInManager;
     private readonly UserManager<ApplicationUser> userManager;
-    private readonly IMemoryCache memoryCache;
 
     public UserController(SignInManager<ApplicationUser> signInManager,
-        UserManager<ApplicationUser> userManager,
-        IMemoryCache memoryCache)
+        UserManager<ApplicationUser> userManager
+        )
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
 
-        this.memoryCache = memoryCache;
+      
     }
 
     [HttpGet]
@@ -70,7 +69,7 @@ public class UserController : Controller
         }
 
         await signInManager.SignInAsync(user, false);
-        this.memoryCache.Remove(UsersCacheKey);
+        
 
         return RedirectToAction("Index", "Home");
     }
