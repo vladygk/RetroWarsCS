@@ -40,7 +40,7 @@
                 {
                     <td><a asp-controller="Poll" asp-area="@AdminAreaName" asp-action="Activate" asp-route-id="@poll.Id">Activate</a></td>
                 }
-                
+                <td><a  asp-area="" asp-controller="Poll" asp-action="DeletePoll" asp-route-id ="@poll.Id">Delete</a></td>
             </tr>
 
         }

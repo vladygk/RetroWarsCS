@@ -245,5 +245,11 @@ public class PollService : IPollService
 
         return allPollViewModels;
     }
+
+    public async Task DeletePoll(string id)
+    {
+        await this.pollRepository.DeleteOneAsync(Guid.Parse(id));
+        await this.pollRepository.SaveAsync();
+    }
 }
 

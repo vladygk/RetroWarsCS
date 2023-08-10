@@ -27,4 +27,6 @@ public interface IPollService
     public Task ActivateAPoll(string id);
 
     public Task<IEnumerable<PollAdminViewModel>> GetAllPollAdminViewModels();
+
+    public Task DeletePoll(string id);
 }

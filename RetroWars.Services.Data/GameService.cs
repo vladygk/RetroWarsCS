@@ -151,25 +151,22 @@ public class GameService : IGameService
 
     public async Task<bool> DeleteGameAsync(string id)
     {
-        try
-        {
-            await this.gameRepository.DeleteOneAsync(Guid.Parse(id));
-            await this.gameRepository.SaveAsync();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-        }
+
+        bool success = await this.gameRepository.DeleteOneAsync(Guid.Parse(id));
+
+        await this.gameRepository.SaveAsync();
+
+      
+        return success;
+    }
 
 
     public async Task<IEnumerable<GameViewModel>> GetFavoritesAsync(string userId)
     {
-       
+
         IEnumerable<GameViewModel> favoriteGames = await this.userService.GetApplicationUserFavoritesByIdAsync(userId);
 
-      
+
         return favoriteGames;
     }
 
@@ -186,6 +183,6 @@ public class GameService : IGameService
         return models;
     }
 
-    
+
 }
 

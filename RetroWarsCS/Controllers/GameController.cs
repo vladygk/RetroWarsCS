@@ -8,21 +8,24 @@ using RetroWars.Services.Data.Contracts;
 using static Common.NotificationMessagesConstants;
 using static Common.GeneralApplicationConstants;
 using Ganss.Xss;
+using RetroWars.Web.ViewModels.Poll;
 
 public class GameController : AuthorizationController
 {
     private readonly IGameService gameService;
     private readonly IGenreService genreService;
     private readonly IPlatformService platformService;
+    private readonly IPollService pollService;
     private readonly IUserService userService;
     private readonly IMemoryCache cache;
-    public GameController(IGameService gameService, IGenreService genreService, IPlatformService platformService, IUserService userService, IMemoryCache cache)
+    public GameController(IGameService gameService, IGenreService genreService, IPlatformService platformService, IUserService userService, IMemoryCache cache, IPollService pollService)
     {
         this.userService = userService;
         this.gameService = gameService;
         this.genreService = genreService;
         this.platformService = platformService;
         this.cache = cache;
+        this.pollService = pollService;
     }
 
     [HttpGet]
@@ -168,6 +171,7 @@ public class GameController : AuthorizationController
     {
         try
         {
+            this.cache.Remove(GamesCacheKey);
             if (ModelState.IsValid)
             {
              bool success =    await this.gameService.EditGameAsync(id, formModel);
@@ -228,9 +232,16 @@ public class GameController : AuthorizationController
     [HttpPost]
     public async Task<IActionResult> Delete(string id, bool other = true)
     {
+        IEnumerable<PollViewModel> polls = await this.pollService.GetAllPollsAsync();
+        if (polls.Any(p => (p.FirstGameId == Guid.Parse(id)) || (p.SecondGameId == Guid.Parse(id)))){
+            TempData[ErrorMessage] = "Error: Can't delete game, it's part of a poll";
+            return RedirectToAction("All");
+        }
+
         try
         {
-          bool success =  await this.gameService.DeleteGameAsync(id);
+            bool success =  await this.gameService.DeleteGameAsync(id);
+            this.cache.Remove(GamesCacheKey);
 
             if(success)
             {

@@ -160,5 +160,14 @@ public class PollController : AuthorizationController
             return RedirectToAction("All", "Poll");
         }
     }
+
+    [HttpGet]
+    [Authorize(Roles = AdminRoleName)]
+    public async Task<IActionResult> DeletePoll(string id)
+    {
+       await this.pollService.DeletePoll(id);
+
+        return RedirectToAction("All", "Poll", new { Area = AdminAreaName });
+    }
 }
 
