@@ -82,9 +82,19 @@ public class GameController : AuthorizationController
 
             if (ModelState.IsValid)
             {
-                await this.gameService.CreateGameAsync(formModel);
-                TempData[SuccessMessage] = "Success: Game added!";
-                return RedirectToAction("All");
+              bool success =  await this.gameService.CreateGameAsync(formModel);
+                if (success)
+                {
+                    TempData[SuccessMessage] = "Success: Game added!";
+                    return RedirectToAction("All");
+                }
+
+                TempData[ErrorMessage] = "Error: Can't add Game";
+                formModel.Platforms = await this.platformService.GetAllPlatformsAsync();
+                formModel.Genres = await this.genreService.GetAllGenresAsync();
+                return this.View(formModel);
+
+
             }
 
             TempData[ErrorMessage] = "Error: Invalid data";
@@ -102,6 +112,7 @@ public class GameController : AuthorizationController
             formModel.Genres = await this.genreService.GetAllGenresAsync();
             return this.View(formModel);
         }
+       
 
 
     }
@@ -159,9 +170,16 @@ public class GameController : AuthorizationController
         {
             if (ModelState.IsValid)
             {
-                await this.gameService.EditGameAsync(id, formModel);
-                TempData[SuccessMessage] = "Success: Game edited.";
+             bool success =    await this.gameService.EditGameAsync(id, formModel);
+                if (success)
+                {
+                    TempData[SuccessMessage] = "Success: Game edited.";
+                    return RedirectToAction("All");
+                }
+
+                TempData[ErrorMessage] = "Error: Couldn't update model.";
                 return RedirectToAction("All");
+
             }
             TempData[ErrorMessage] = "Error: Invalid data";
 
@@ -212,8 +230,14 @@ public class GameController : AuthorizationController
     {
         try
         {
-            await this.gameService.DeleteGameAsync(id);
-            TempData[SuccessMessage] = "Success: Game deleted";
+          bool success =  await this.gameService.DeleteGameAsync(id);
+
+            if(success)
+            {
+                TempData[SuccessMessage] = "Success: Game deleted";
+                return RedirectToAction("All");
+            }
+            TempData[ErrorMessage] = "Error: Operation failed";
             return RedirectToAction("All");
         }
         catch

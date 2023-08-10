@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RetroWars.Data.Models\RetroWars.Data.Models.csproj" />
+    <ProjectReference Include="..\Retrowars.Data.Repository\RetroWars.Data.Repository.csproj" />
     <ProjectReference Include="..\RetroWars.Data\RetroWars.Data.csproj" />
     <ProjectReference Include="..\RetroWars.Services.Data\RetroWars.Services.Data.csproj" />
     <ProjectReference Include="..\RetroWars.Web.ViewModels\RetroWars.Web.ViewModels.csproj" />

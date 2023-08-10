@@ -1,11 +1,9 @@
 ﻿namespace RetroWars.Services.Data;
 
-using Bluebean_Backend.Utils.Interfaces;
 using RetroWars.Data.Models;
 using Retrowars.Data.Repository;
 using Contracts;
 using Web.ViewModels.Game;
-using Microsoft.AspNetCore.Http;
 
 using static Common.GeneralApplicationConstants;
 
@@ -14,12 +12,13 @@ public class GameService : IGameService
     private readonly IRepository<Game> gameRepository;
     private readonly IFireBaseService firebaseService;
     private readonly IUserService userService;
-
-    public GameService(IRepository<Game> gameRepository, IFireBaseService firebaseService, IUserService userService)
+    private readonly IFileUploadService fileUploadService;
+    public GameService(IRepository<Game> gameRepository, IFireBaseService firebaseService, IUserService userService, IFileUploadService fileUploadService)
     {
         this.gameRepository = gameRepository;
         this.firebaseService = firebaseService;
         this.userService = userService;
+        this.fileUploadService = fileUploadService;
     }
 
     public async Task<IEnumerable<GameViewModel>> GetAllGamesAsync()
@@ -39,7 +38,7 @@ public class GameService : IGameService
             GenreId = g.GenreId.ToString(),
             Platform = g.Platform.Name,
             PlatformId = g.PlatformId.ToString()
-        });
+        }).ToList();
 
         return allGamesViewModels;
     }
@@ -70,16 +69,16 @@ public class GameService : IGameService
         return viewModel;
     }
 
-    public async Task CreateGameAsync(GameFormModel formModel)
+    public async Task<bool> CreateGameAsync(GameFormModel formModel)
     {
         try
         {
-            string pathAndFileName = await this.UploadFile(formModel.File);
+            string pathAndFileName = await fileUploadService.UploadFile(formModel.File);
 
             if (!String.IsNullOrWhiteSpace(pathAndFileName))
             {
 
-                string base64Image = ConvertToBase64(pathAndFileName);
+                string base64Image = fileUploadService.ConvertToBase64(pathAndFileName);
 
                 string imageUrl = await this.firebaseService.UploadFile(base64Image, DefaultFireBaseStorageFolder, pathAndFileName.Split("\\", StringSplitOptions.RemoveEmptyEntries)[^1]);
 
@@ -101,74 +100,77 @@ public class GameService : IGameService
 
                 File.Delete(pathAndFileName);
             }
+            return true;
         }
         catch (Exception ex)
         {
 
-            throw new Exception("Can't add game");
+            return false;
         }
 
 
 
     }
 
-    public async Task EditGameAsync(string id, GameFormModel newData)
+    public async Task<bool> EditGameAsync(string id, GameFormModel newData)
     {
 
-
-        Game toEdit = await this.gameRepository.GetOneAsync(id, false);
-
-        if (toEdit is null)
+        try
         {
-            throw new ArgumentException("Invalid Id");
+            Game toEdit = await this.gameRepository.GetOneAsync(id, false);
+
+            if (toEdit is null)
+            {
+                throw new ArgumentException("Invalid Id");
+            }
+
+            Game editedGame = new Game()
+            {
+                Id = Guid.Parse(id),
+                Name = newData.Name,
+                Description = newData.Description,
+                Developer = newData.Developer,
+                Publisher = newData.Publisher,
+                YearOfPublishing = newData.YearOfPublishing,
+                GenreId = newData.GenreId,
+                PlatformId = newData.PlatformId,
+                ImageUrl = toEdit.ImageUrl,
+            };
+
+
+            await this.gameRepository.UpdateOneAsync(editedGame);
+            await this.gameRepository.SaveAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
         }
 
-        Game editedGame = new Game()
-        {
-            Id = Guid.Parse(id),
-            Name = newData.Name,
-            Description = newData.Description,
-            Developer = newData.Developer,
-            Publisher = newData.Publisher,
-            YearOfPublishing = newData.YearOfPublishing,
-            GenreId = newData.GenreId,
-            PlatformId = newData.PlatformId,
-            ImageUrl = toEdit.ImageUrl,
-        };
-
-
-        await this.gameRepository.UpdateOneAsync(editedGame);
-        await this.gameRepository.SaveAsync();
-
-
     }
 
-    public async Task DeleteGameAsync(string id)
+    public async Task<bool> DeleteGameAsync(string id)
     {
-        await this.gameRepository.DeleteOneAsync(Guid.Parse(id));
-        await this.gameRepository.SaveAsync();
-    }
+        try
+        {
+            await this.gameRepository.DeleteOneAsync(Guid.Parse(id));
+            await this.gameRepository.SaveAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+        }
 
 
     public async Task<IEnumerable<GameViewModel>> GetFavoritesAsync(string userId)
     {
-        ICollection<Game> favoriteGames = await this.userService.GetApplicationUserFavoritesByIdAsync(userId);
+       
+        IEnumerable<GameViewModel> favoriteGames = await this.userService.GetApplicationUserFavoritesByIdAsync(userId);
 
-        IEnumerable<GameViewModel> favoriteGamesViewModel = favoriteGames.Select(g => new GameViewModel()
-        {
-            Id = g.Id.ToString(),
-            Name = g.Name,
-            Description = g.Description,
-            Developer = g.Developer,
-            Publisher = g.Publisher,
-            YearOfPublishing = g.YearOfPublishing,
-            PlatformId = g.PlatformId.ToString(),
-            Platform = g.Platform.Name,
-            Genre = g.Genre.Name.ToString(),
-            GenreId = g.GenreId.ToString(),
-            ImageUrl = g.ImageUrl,
-        });
-        return favoriteGamesViewModel;
+      
+        return favoriteGames;
     }
 
     public async Task<IEnumerable<PollSelectGameViewModel>> GetAllPollSelectGameViewModels()
@@ -184,41 +186,6 @@ public class GameService : IGameService
         return models;
     }
 
-    private async Task<string> UploadFile(IFormFile file)
-    {
-        string path = String.Empty;
-
-        string pathAndFileName = String.Empty;
-        try
-        {
-            if (file.Length > 0)
-            {
-                string filename = Guid.NewGuid() + Path.GetExtension(file.FileName);
-                path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "Temp"));
-                pathAndFileName = Path.Combine(path, filename);
-                using (var filestream = new FileStream(pathAndFileName, FileMode.Create))
-                {
-                    await file.CopyToAsync(filestream);
-                }
-
-                return pathAndFileName;
-            }
-
-        }
-        catch (Exception)
-        {
-            throw new Exception("Can't upload file");
-        }
-        return pathAndFileName;
-    }
-
-    private string ConvertToBase64(string path)
-    {
-
-        byte[] bytes = File.ReadAllBytes(path);
-        string fileBase64 = Convert.ToBase64String(bytes);
-
-        return fileBase64;
-    }
+    
 }
 

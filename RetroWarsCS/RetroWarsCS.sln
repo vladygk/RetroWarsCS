@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{3FF2BFA8-D4BD-4EA0-82F7-76EA51731234}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{8046C570-E0B8-40F0-B57A-285A37CC926F}"
+	ProjectSection(SolutionItems) = preProject
+		..\RetroWars.Services.Tests\Usings.cs = ..\RetroWars.Services.Tests\Usings.cs
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{066DB013-E3EA-4A17-971F-6B90F5D6CB36}"
 EndProject
@@ -27,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Web.ViewModels", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Common", "..\RetroWars.Common\RetroWars.Common.csproj", "{94450967-D020-42B2-B145-2B1FC47FD1E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Retrowars.Data.Repository", "..\Retrowars.Data.Repository\Retrowars.Data.Repository.csproj", "{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Data.Repository", "..\Retrowars.Data.Repository\RetroWars.Data.Repository.csproj", "{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

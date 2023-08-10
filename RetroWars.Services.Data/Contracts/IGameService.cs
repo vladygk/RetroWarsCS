@@ -8,11 +8,11 @@ public interface IGameService
     public Task<IEnumerable<GameViewModel>> GetAllGamesAsync();
     public Task<GameViewModel?> GetOneGameAsync(string id);
 
-    public Task CreateGameAsync(GameFormModel gameToAdd);
+    public Task<bool> CreateGameAsync(GameFormModel gameToAdd);
 
-    public Task EditGameAsync(string id, GameFormModel newData);
+    public Task<bool> EditGameAsync(string id, GameFormModel newData);
 
-    public Task DeleteGameAsync(string id);
+    public Task<bool> DeleteGameAsync(string id);
 
     public Task<IEnumerable<GameViewModel>> GetFavoritesAsync(string userId);
 

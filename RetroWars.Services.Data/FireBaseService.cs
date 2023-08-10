@@ -1,11 +1,10 @@
-﻿using System.Text;
-using Bluebean_Backend.Utils.Interfaces;
+﻿
+namespace RetroWars.Services.Data;
 
 using Firebase.Storage;
+using RetroWars.Services.Data.Contracts;
 
-namespace Bluebean_Backend.Utils
-{
-    public class FireBaseService :IFireBaseService
+public class FireBaseService :IFireBaseService
     {
         //private static string ApiKey = "YOUR_API_KEY";
         private static string Bucket = "retrowars-asp.appspot.com";
@@ -25,4 +24,4 @@ namespace Bluebean_Backend.Utils
             return downloadUrl;
         }
     }
-}
+
