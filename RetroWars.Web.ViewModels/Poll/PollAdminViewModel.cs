@@ -11,7 +11,7 @@ public class PollAdminViewModel
 
     public string FirstGamePlatform { get; set; } = null!;
 
-    public Guid SecondGameId { get; set; }
+   // public Guid SecondGameId { get; set; }
 
     public string SecondGameName { get; set; } = null!;
 

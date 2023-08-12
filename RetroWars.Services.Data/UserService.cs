@@ -86,10 +86,10 @@ public class UserService : IUserService
         ApplicationUser? user = await this.applicationUserRepository.GetOneAsync(userId, false);
         if (user is null)
         {
-            throw new ArgumentException("Invalid Id");
+            throw new ArgumentException("Invalid Id.");
         }
 
-        return user.FavoriteGames.Select(g => new GameViewModel() {
+        var result =  user.FavoriteGames.Select(g => new GameViewModel() {
             Id = g.Id.ToString(),
             Name = g.Name,
             Description = g.Description,
@@ -102,7 +102,7 @@ public class UserService : IUserService
             GenreId = g.GenreId.ToString(),
             ImageUrl = g.ImageUrl,
         });
-
+        return result;
     }
 
     public async Task<bool> MakeAdmin(string userId)

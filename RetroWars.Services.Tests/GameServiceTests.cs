@@ -6,8 +6,9 @@ using RetroWars.Services.Data;
 using RetroWars.Services.Data.Contracts;
 using RetroWars.Web.ViewModels.Game;
 using RetroWars.Web.ViewModels.User;
-using static RetroWars.Services.Tests.TestingConstants;
+using static RetroWars.Services.Tests.Utils.TestingConstants;
 using System.Text.Json;
+using RetroWars.Services.Tests.Utils;
 
 [TestFixture]
 public class GameServiceTests
@@ -29,12 +30,12 @@ public class GameServiceTests
     {
         this.game = TestObjectsFactory.CreateGame();
         this.gameViewModel = TestObjectsFactory.CreateGameViewModel();
-        this.user = TestObjectsFactory.CreateUser();
+        this.user = TestObjectsFactory.CreateUserViewModel();
         this.gameFormModel = TestObjectsFactory.CreateGameFormModel();
         this.pollSelectGameViewMode = TestObjectsFactory.CreatePollSelectGameViewModel();
 
 
-        this.gameRepositoryMock = MocksFactory.CreateMockGameRepository( game);
+        this.gameRepositoryMock = MocksFactory.CreateMockRepository<Game>( game);
         this.fireBaseMock = MocksFactory.CreateMockFirebaseService();
         this.userServiceMock = MocksFactory.CreateMockUserService( user,  gameViewModel);
         this.fileUploadServiceMock = MocksFactory.CreateMockFileUploadService();
@@ -66,13 +67,22 @@ public class GameServiceTests
         var expected = gameViewModel;
 
         //Act
-        var actual = await this.gameService.GetOneGameAsync(gameId);
+        var actual = await this.gameService.GetOneGameAsync(entityId);
 
         var expectedJson = JsonSerializer.Serialize(expected);
         var actualJson = JsonSerializer.Serialize(actual);
         //Assert
         Assert.That(actualJson, Is.EqualTo(expectedJson));
 
+    }
+
+    [Test]
+    public async Task GetOneGameAsyncThrowsExceptionWithInvalidId()
+    {
+
+        Assert.ThrowsAsync<ArgumentException>(async() => {
+            await this.gameService.GetOneGameAsync(invalidId);
+        }, "Invalid id");
     }
 
     [Test]
@@ -93,7 +103,7 @@ public class GameServiceTests
         // Arrange
 
         // Act
-        bool actual = await this.gameService.EditGameAsync(gameId,this.gameFormModel);
+        bool actual = await this.gameService.EditGameAsync(entityId,this.gameFormModel);
 
         // Assert
         Assert.That(actual, Is.True);
@@ -105,7 +115,7 @@ public class GameServiceTests
         // Arrange
 
         // Act
-        bool actual = await this.gameService.DeleteGameAsync(gameId);
+        bool actual = await this.gameService.DeleteGameAsync(entityId);
 
         // Assert
         Assert.That(actual, Is.True);
@@ -118,7 +128,7 @@ public class GameServiceTests
         var expected = new List<GameViewModel>(){ gameViewModel};
         
         //Act
-        var actual = await this.gameService.GetFavoritesAsync(userId);
+        var actual = await this.gameService.GetFavoritesAsync(entityId);
         var expectedJson = JsonSerializer.Serialize(expected);
         var actualJson = JsonSerializer.Serialize(actual);
         //Assert
