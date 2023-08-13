@@ -6,7 +6,8 @@
 
 <div class="container mx-auto mt-4">
     
-
+    <a class=" text-success btn-warning btn m-5" asp-area="" asp-controller="Poll" asp-action="Create">Create_Poll</a>
+    <div class="row">
         @if (Model.Any())
         {
             @foreach (RetroWars.Web.ViewModels.Poll.PollViewModel viewModel in Model)
@@ -21,6 +22,6 @@
             <h5>No polls added to RetroWars.</h5>
         }
 
-
+    </div>
     
 </div>
