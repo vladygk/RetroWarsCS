@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Web.App", "RetroWars.Web.App.csproj", "{E518C182-DFD7-4398-AE9F-4E7214B661F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{3FF2BFA8-D4BD-4EA0-82F7-76EA51731234}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{8046C570-E0B8-40F0-B57A-285A37CC926F}"
+	ProjectSection(SolutionItems) = preProject
+		..\RetroWars.Services.Tests\Usings.cs = ..\RetroWars.Services.Tests\Usings.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{066DB013-E3EA-4A17-971F-6B90F5D6CB36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1A4493A-752A-4881-A62B-8E10D1899D0F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Data", "..\RetroWars.Data\RetroWars.Data.csproj", "{C72B82D0-A5DC-40FB-B988-DB6D48229FA3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Data.Models", "..\RetroWars.Data.Models\RetroWars.Data.Models.csproj", "{B77AF877-26EC-4AB0-94C3-E90EF402ED1B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Services.Data", "..\RetroWars.Services.Data\RetroWars.Services.Data.csproj", "{50FB1A30-7155-4699-AC61-1B7C6313466A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Services.Tests", "..\RetroWars.Services.Tests\RetroWars.Services.Tests.csproj", "{81F9ABCF-35BF-4D46-A279-6CCFDDDE6279}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Web.Infrastructure", "..\RetroWars.Web.Infrastructure\RetroWars.Web.Infrastructure.csproj", "{F6B00AB1-4D0A-47E4-B32E-549F21A0B322}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Web.ViewModels", "..\RetroWars.Web.ViewModels\RetroWars.Web.ViewModels.csproj", "{95FAF362-5530-4C0C-9B81-CAF0FE97F8C2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Common", "..\RetroWars.Common\RetroWars.Common.csproj", "{94450967-D020-42B2-B145-2B1FC47FD1E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroWars.Data.Repository", "..\Retrowars.Data.Repository\RetroWars.Data.Repository.csproj", "{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E518C182-DFD7-4398-AE9F-4E7214B661F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E518C182-DFD7-4398-AE9F-4E7214B661F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E518C182-DFD7-4398-AE9F-4E7214B661F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E518C182-DFD7-4398-AE9F-4E7214B661F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C72B82D0-A5DC-40FB-B988-DB6D48229FA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C72B82D0-A5DC-40FB-B988-DB6D48229FA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C72B82D0-A5DC-40FB-B988-DB6D48229FA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C72B82D0-A5DC-40FB-B988-DB6D48229FA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B77AF877-26EC-4AB0-94C3-E90EF402ED1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B77AF877-26EC-4AB0-94C3-E90EF402ED1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B77AF877-26EC-4AB0-94C3-E90EF402ED1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B77AF877-26EC-4AB0-94C3-E90EF402ED1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50FB1A30-7155-4699-AC61-1B7C6313466A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50FB1A30-7155-4699-AC61-1B7C6313466A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50FB1A30-7155-4699-AC61-1B7C6313466A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50FB1A30-7155-4699-AC61-1B7C6313466A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81F9ABCF-35BF-4D46-A279-6CCFDDDE6279}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81F9ABCF-35BF-4D46-A279-6CCFDDDE6279}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81F9ABCF-35BF-4D46-A279-6CCFDDDE6279}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81F9ABCF-35BF-4D46-A279-6CCFDDDE6279}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6B00AB1-4D0A-47E4-B32E-549F21A0B322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B00AB1-4D0A-47E4-B32E-549F21A0B322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B00AB1-4D0A-47E4-B32E-549F21A0B322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B00AB1-4D0A-47E4-B32E-549F21A0B322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95FAF362-5530-4C0C-9B81-CAF0FE97F8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95FAF362-5530-4C0C-9B81-CAF0FE97F8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95FAF362-5530-4C0C-9B81-CAF0FE97F8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95FAF362-5530-4C0C-9B81-CAF0FE97F8C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94450967-D020-42B2-B145-2B1FC47FD1E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94450967-D020-42B2-B145-2B1FC47FD1E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94450967-D020-42B2-B145-2B1FC47FD1E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94450967-D020-42B2-B145-2B1FC47FD1E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E518C182-DFD7-4398-AE9F-4E7214B661F5} = {8046C570-E0B8-40F0-B57A-285A37CC926F}
+		{C72B82D0-A5DC-40FB-B988-DB6D48229FA3} = {3FF2BFA8-D4BD-4EA0-82F7-76EA51731234}
+		{B77AF877-26EC-4AB0-94C3-E90EF402ED1B} = {3FF2BFA8-D4BD-4EA0-82F7-76EA51731234}
+		{50FB1A30-7155-4699-AC61-1B7C6313466A} = {066DB013-E3EA-4A17-971F-6B90F5D6CB36}
+		{81F9ABCF-35BF-4D46-A279-6CCFDDDE6279} = {A1A4493A-752A-4881-A62B-8E10D1899D0F}
+		{F6B00AB1-4D0A-47E4-B32E-549F21A0B322} = {8046C570-E0B8-40F0-B57A-285A37CC926F}
+		{95FAF362-5530-4C0C-9B81-CAF0FE97F8C2} = {8046C570-E0B8-40F0-B57A-285A37CC926F}
+		{0965A31C-7DC1-473A-8DB6-F9AB20EF197E} = {3FF2BFA8-D4BD-4EA0-82F7-76EA51731234}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {105CE443-3C68-4511-83B5-D9A205B85676}
+	EndGlobalSection
+EndGlobal
