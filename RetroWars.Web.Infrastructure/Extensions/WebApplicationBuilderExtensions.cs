@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Data.Models;
 using Microsoft.AspNetCore.Builder;
 using static Common.GeneralApplicationConstants;
+using System;
 
 
 public static class WebApplicationBuilderExtensions
@@ -61,7 +62,26 @@ public static class WebApplicationBuilderExtensions
 
 
                 ApplicationUser adminUser =
-                    await userManager.FindByEmailAsync(email);
+                    await userManager.FindByEmailAsync(AdminEmail);
+
+
+
+                if (adminUser is null)
+                {
+                    IdentityResult result = await userManager.CreateAsync(new ApplicationUser()
+                    {
+                        UserName = "admin@abv.bg",
+                        FirstName = "Admin",
+                        LastName = "Adminov",
+                        Email = AdminEmail
+                    });
+
+
+                    adminUser = await userManager.FindByEmailAsync(AdminEmail);
+                    adminUser.PasswordHash = userManager.PasswordHasher.HashPassword(adminUser, "123456");
+                }
+
+
 
                 await userManager.AddToRoleAsync(adminUser, AdminRoleName);
             })

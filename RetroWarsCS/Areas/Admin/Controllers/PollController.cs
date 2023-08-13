@@ -5,14 +5,16 @@ using RetroWars.Services.Data.Contracts;
 using static Common.NotificationMessagesConstants;
 using static Common.GeneralApplicationConstants;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Extensions.Caching.Memory;
 
 public class PollController : AdminBaseController
 {
     private readonly IPollService pollService;
-    public PollController(IPollService pollService)
+    private readonly IMemoryCache cache;
+    public PollController(IPollService pollService, IMemoryCache cache)
     {
         this.pollService = pollService;
+        this.cache = cache;
     }
 
     [HttpGet]
@@ -38,7 +40,7 @@ public class PollController : AdminBaseController
         try
         {
              await this.pollService.ActivateAPoll(id);
-
+            this.cache.Remove(PollsCacheKey);
             return RedirectToAction("All", "Poll", new { area = AdminAreaName });
         }
         catch

@@ -192,48 +192,49 @@ namespace RetroWars.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Developer = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Publisher = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     YearOfPublishing = table.Column<int>(type: "int", nullable: false),
                     GenreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PlatformId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Games", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Games_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Games_Genres_GenreId",
                         column: x => x.GenreId,
                         principalTable: "Genres",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Games_Platforms_PlatformId",
+                        column: x => x.PlatformId,
+                        principalTable: "Platforms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "GamePlatform",
+                name: "ApplicationUserGame",
                 columns: table => new
                 {
-                    GamesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PlatformsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    FavoriteGamesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GamePlatform", x => new { x.GamesId, x.PlatformsId });
+                    table.PrimaryKey("PK_ApplicationUserGame", x => new { x.FavoriteGamesId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_GamePlatform_Games_GamesId",
-                        column: x => x.GamesId,
-                        principalTable: "Games",
+                        name: "FK_ApplicationUserGame_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GamePlatform_Platforms_PlatformsId",
-                        column: x => x.PlatformsId,
-                        principalTable: "Platforms",
+                        name: "FK_ApplicationUserGame_Games_FavoriteGamesId",
+                        column: x => x.FavoriteGamesId,
+                        principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -265,6 +266,40 @@ namespace RetroWars.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "ApplicationUserPoll",
+                columns: table => new
+                {
+                    PollsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    VotersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationUserPoll", x => new { x.PollsId, x.VotersId });
+                    table.ForeignKey(
+                        name: "FK_ApplicationUserPoll_AspNetUsers_VotersId",
+                        column: x => x.VotersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUserPoll_Polls_PollsId",
+                        column: x => x.PollsId,
+                        principalTable: "Polls",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUserGame_UsersId",
+                table: "ApplicationUserGame",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUserPoll_VotersId",
+                table: "ApplicationUserPoll",
+                column: "VotersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -306,19 +341,14 @@ namespace RetroWars.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GamePlatform_PlatformsId",
-                table: "GamePlatform",
-                column: "PlatformsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Games_ApplicationUserId",
-                table: "Games",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Games_GenreId",
                 table: "Games",
                 column: "GenreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Games_PlatformId",
+                table: "Games",
+                column: "PlatformId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Polls_FirstGameId",
@@ -333,6 +363,12 @@ namespace RetroWars.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ApplicationUserGame");
+
+            migrationBuilder.DropTable(
+                name: "ApplicationUserPoll");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -349,25 +385,22 @@ namespace RetroWars.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "GamePlatform");
-
-            migrationBuilder.DropTable(
                 name: "Polls");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Platforms");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Games");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Genres");
 
             migrationBuilder.DropTable(
-                name: "Genres");
+                name: "Platforms");
         }
     }
 }

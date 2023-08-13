@@ -211,8 +211,8 @@ public class PollService : IPollService
         if(votesForFirst  == 0 && votesForSecond == 0) {
             return result;
         }
-        result[0] = (double)votesForFirst/(votesForFirst+votesForSecond);
-        result[1] = (double)votesForSecond/(votesForSecond+votesForFirst);
+        result[0] = ((double)votesForFirst/(votesForFirst+votesForSecond))*100;
+        result[1] = ((double)votesForSecond/(votesForSecond+votesForFirst))*100;
 
         return result;
     }
@@ -246,7 +246,7 @@ public class PollService : IPollService
         try
         {
             Poll? poll = await this.pollRepository.GetOneAsync(id, false);
-
+           
             if (poll is null)
             {
                 throw new ArgumentException("Invalid id");

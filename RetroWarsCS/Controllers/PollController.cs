@@ -151,8 +151,9 @@ public class PollController : AuthorizationController
         try
         {
           await  this.pollService.DeactivateAPoll(id);
+            this.cache.Remove(PollsCacheKey);
 
-          return RedirectToAction("All", "Poll");
+            return RedirectToAction("All", "Poll");
         }
         catch
         {
@@ -166,7 +167,7 @@ public class PollController : AuthorizationController
     public async Task<IActionResult> DeletePoll(string id)
     {
        await this.pollService.DeletePoll(id);
-
+        this.cache.Remove(PollsCacheKey);
         return RedirectToAction("All", "Poll", new { Area = AdminAreaName });
     }
 }
