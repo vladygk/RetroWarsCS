@@ -1,0 +1,67 @@
+﻿@model PlatformFormModel
+
+
+@{
+    
+    string smartText = "Please enter correct information";
+}
+<form method="post" class="vh-100 " enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-md-5 mt-md-4 pb-5">
+
+
+                            <h3 class="text-white-50 mb-5">@smartText</h3>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="Name" type="text" class="form-control form-control-lg" />
+                                <label asp-for="Name" class="form-label" for="typeNameX">Name</label>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="Company" type="text" class="form-control form-control-lg" />
+                                <label asp-for="Company" class="form-label">Developer</label>
+                                <span asp-validation-for="Company" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="File" type="file" id="typeNameX" class="form-control form-control-lg" />
+                                <label asp-for="File" class="form-label" for="typeNameX">Image</label>
+                                <span asp-validation-for="File" class="text-danger"></span>
+
+                            </div>
+
+
+                            <div class="form-outline form-white mb-4">
+                                <input asp-for="YearOfRelease" type="number" id="typeNameX" class="form-control form-control-lg" />
+                                <label asp-for="YearOfRelease" class="form-label" for="typeNameX">Year of publishing</label>
+                                <span asp-validation-for="YearOfRelease" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-outline form-white mb-4">
+                                <textarea asp-for="Description" id="typePasswordX" class="form-control form-control-lg"></textarea>
+                                <label asp-for="Description" class="form-label" for="typePasswordX">Description</label>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+
+
+                            <button type="submit" class="btn btn-outline-light btn-lg px-5" type="submit">Add platform</button>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

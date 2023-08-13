@@ -1,0 +1,14 @@
+﻿@model PlatformFormModel
+
+@{
+    ViewData["Title"] = "Add Platform";
+    
+}
+
+<h2>$ Sudo Add a Platform</h2>
+
+@await Html.PartialAsync("_PlatformFormPartial", Model)
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

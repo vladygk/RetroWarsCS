@@ -4,13 +4,75 @@ using RetroWars.Data.Models;
 using RetroWars.Data.Repository;
 using Contracts;
 using Web.ViewModels.Platform;
+using static Common.GeneralApplicationConstants;
 public class PlatformService : IPlatformService
 {
     private readonly IRepository<Platform> platformRepository;
-    public PlatformService(IRepository<Platform> platformRepository)
+    private readonly IRepository<Game> gameRepository;
+    private readonly IFileUploadService fileUploadService;
+    private readonly IFireBaseService fireBaseService;
+    public PlatformService(IRepository<Platform> platformRepository, IFileUploadService fileUploadService, IFireBaseService fireBaseService, IRepository<Game> gameRepository)
     {
         this.platformRepository = platformRepository;
+        this.fileUploadService = fileUploadService;
+        this.fireBaseService = fireBaseService;
+        this.gameRepository = gameRepository;
     }
+
+    public async Task<bool> CreatePlatformAsync(PlatformFormModel model)
+    {
+        try
+        {
+            Platform platform = new Platform()
+            {
+                Name = model.Name,
+                Company = model.Company,
+                Description = model.Description,
+                YearOfRelease = model.YearOfRelease,
+
+            };
+
+            string path = await this.fileUploadService.UploadFile(model.File);
+
+            string base64 = this.fileUploadService.ConvertToBase64(path);
+
+            string url = await this.fireBaseService.UploadFile(base64, DefaultFireBaseStorageFolder, path.Split("\\", StringSplitOptions.RemoveEmptyEntries)[^1]);
+            platform.ImageUrl = url;
+
+            await this.platformRepository.AddAsync(platform);
+            await this.platformRepository.SaveAsync();
+            return true;
+        }
+        catch
+        {
+
+            return false;
+        }
+    }
+
+    public async Task<bool> DeletePlatformAsync(string id)
+    {
+        try
+        {
+            PlatformViewModel? toDelete = await this.GetOnePlatformsViewModelAsync(id);
+            if (toDelete is null)
+            {
+
+                throw new ArgumentException("Invalid id,");
+            }
+
+            await this.platformRepository.DeleteOneAsync(Guid.Parse(id));
+            await this.platformRepository.SaveAsync();
+            return true;
+
+        }
+        catch
+        {
+
+            return false;
+        }
+    }
+
     public async Task<IEnumerable<GameSelectPlatformsFormModel>> GetAllPlatformsAsync()
     {
         IEnumerable<Platform> allPlatforms = await this.platformRepository.GetAllAsync();
@@ -49,7 +111,7 @@ public class PlatformService : IPlatformService
 
         if (platform is null)
         {
-            throw new ArgumentException("Invalid Platform Id"); 
+            throw new ArgumentException("Invalid Platform Id");
         }
 
         PlatformViewModel viewModel = new PlatformViewModel()
@@ -64,6 +126,12 @@ public class PlatformService : IPlatformService
         };
 
         return viewModel;
+    }
+
+    public async Task<bool> CheckIfPlatformIsAssociatedWithGames(string id)
+    {
+       var allGames =  await this.gameRepository.GetAllAsync();
+       return allGames.Any(g=>g.Platform.Id == Guid.Parse(id));
     }
 }
 

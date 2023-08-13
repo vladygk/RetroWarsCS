@@ -1,5 +1,9 @@
 ﻿@model PlatformViewModel 
+@using RetroWars.Web.Infrastructure.Extensions
 
+@{
+    bool isAdmin = User.IsAdmin();
+}
 <div class="card" style="width: 18rem; height: 22rem;">
     <img src="@Model.ImageUrl" class="card-img-top" style="height: 15vh; width: auto" alt="@Model.Name">
     <div class="card-body">
@@ -7,5 +11,9 @@
         <h2 class="card-title">@Model.Company</h2>
         <h2 class="card-title">@Model.YearOfRelease</h2>
         <a asp-controller="Platform" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">Know More</a>
+        @if (isAdmin)
+        {
+            <a asp-controller="Platform" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        }
     </div>
 </div>
