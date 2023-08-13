@@ -2,10 +2,13 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using X.PagedList;
 using RetroWars.Services.Data.Contracts;
 using RetroWars.Web.Infrastructure.Extensions;
 using RetroWars.Web.ViewModels.ForumThread;
 using static Common.NotificationMessagesConstants;
+
 
 public class ForumThreadController : AuthorizationController
 {
@@ -19,12 +22,16 @@ public class ForumThreadController : AuthorizationController
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> All()
+    public async Task<IActionResult> All(int? page)
     {
         try
         {
             var threads = await this.forumThreadService.GetAllAsync();
-            return this.View(threads);
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+
+            return this.View(threads.ToPagedList(pageNumber, pageSize));
         }
         catch
         {
@@ -58,13 +65,19 @@ public class ForumThreadController : AuthorizationController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Details(string id)
+    public async Task<IActionResult> Details(string id, int? page)
     {
         try
         {
             ForumThreadViewModel viewModel =  await this.forumThreadService.GetOneAsync(id);
 
             viewModel.ForumPosts = await this.forumPostService.GetAllPostsAsync(id);
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+
+            viewModel.ForumPostsPaged = viewModel.ForumPosts.ToPagedList(pageNumber,pageSize);
+
+            viewModel.ForumPosts = viewModel.ForumPosts.ToPagedList(pageNumber, pageSize);
 
             DetailsPageWrapperViewModel wrapper = new DetailsPageWrapperViewModel()
             {

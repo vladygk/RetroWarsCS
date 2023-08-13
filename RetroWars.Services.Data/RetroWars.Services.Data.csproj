@@ -20,6 +20,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.20" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.20" />
+    <PackageReference Include="X.PagedList" Version="8.4.7" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
   </ItemGroup>
 
   <ItemGroup>

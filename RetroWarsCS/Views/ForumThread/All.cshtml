@@ -1,5 +1,8 @@
-﻿@model IEnumerable<ForumThreadViewModel>
+﻿@model X.PagedList.IPagedList<ForumThreadViewModel>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
 
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewData["Title"] = "All Threads";
     bool isAuthenticated = User.Identity?.IsAuthenticated ?? false;
@@ -30,4 +33,8 @@
 
 
     </div>
+    <div class="row">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>
+    @Html.PagedListPager( Model, page => Url.Action("All", new { page }) )
 </div>
+<br />
+

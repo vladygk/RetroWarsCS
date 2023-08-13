@@ -1,11 +1,14 @@
 ﻿@model DetailsPageWrapperViewModel
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
 @{
     ViewData["Title"] = Model.ForumThreadViewModel.Title.Substring(0, 10);
     bool isAuthenticated = User.Identity?.IsAuthenticated ?? false;
     ViewData["ForumThreadId"] = Model.ForumThreadViewModel.Id.ToString();
 }
 
-<div class="border w-75 p-3 d-flex flex-column align-items-center">
+<div class="border w-75 p-3 d-flex flex-column align-items-center" style="height: 85vh">
     <div>
         <h1 style="color: #32CD41">@Model.ForumThreadViewModel.Title </h1>
     </div>
@@ -14,7 +17,7 @@
         <h2>at @Model.ForumThreadViewModel.CreatedDateTime</h2>
     </div>
     <a asp-area="" asp-controller=""></a>
-    <div class="container">
+    <div class="container" style="height: 70%">
         @if (Model.ForumThreadViewModel.ForumPosts.Any())
         {
             @foreach (ForumPostViewModel post in Model.ForumThreadViewModel.ForumPosts)
@@ -31,8 +34,10 @@
        
     @await Html.PartialAsync("_ForumPostFormPartial",Model.ForumPostFormModel)
     </div>
+    <div class="row mt-3">Page @(Model.ForumThreadViewModel.ForumPostsPaged.PageCount < Model.ForumThreadViewModel.ForumPostsPaged.PageNumber ? 0 : Model.ForumThreadViewModel.ForumPostsPaged.PageNumber) of @Model.ForumThreadViewModel.ForumPostsPaged.PageCount</div>
+    @Html.PagedListPager( Model.ForumThreadViewModel.ForumPostsPaged, page => Url.Action("Details","ForumThread", new {Model.ForumThreadViewModel.Id, page }) )
     <div>
-        <a class="btn m-2 " style="color:#FF01FF" asp-controller="ForumThread" asp-action="All" asp-area="">Back</a>
+        <a class="btn  " style="color:#FF01FF" asp-controller="ForumThread" asp-action="All" asp-area="">Back</a>
     </div>
 </div>
 

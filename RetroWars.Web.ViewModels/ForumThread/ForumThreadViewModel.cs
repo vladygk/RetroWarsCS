@@ -1,4 +1,5 @@
 ﻿using RetroWars.Web.ViewModels.ForumPost;
+using X.PagedList;
 
 namespace RetroWars.Web.ViewModels.ForumThread;
 
@@ -19,4 +20,5 @@ public class ForumThreadViewModel
     public int ForumPostsCount { get; set; }
 
     public IEnumerable<ForumPostViewModel> ForumPosts { get; set; }
+    public X.PagedList.IPagedList<ForumPostViewModel>? ForumPostsPaged { get; set; }
 }
