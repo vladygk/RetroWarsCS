@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-	  <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+	 
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-RetroWarsCS-e6d7cd15-4d76-4c1e-8996-cec6e43cf9e0</UserSecretsId>
@@ -38,10 +38,6 @@
     <ProjectReference Include="..\RetroWars.Services.Data\RetroWars.Services.Data.csproj" />
     <ProjectReference Include="..\RetroWars.Web.Infrastructure\RetroWars.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\RetroWars.Web.ViewModels\RetroWars.Web.ViewModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Temp\" />
   </ItemGroup>
 
 </Project>

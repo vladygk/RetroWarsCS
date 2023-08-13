@@ -7,7 +7,7 @@ using RetroWars.Services.Data.Contracts;
 public class FireBaseService :IFireBaseService
     {
         //private static string ApiKey = "YOUR_API_KEY";
-        private static string Bucket = "RetroWars-asp.appspot.com";
+        private static string Bucket = "retrowars-asp.appspot.com";
 
         public async Task<string> UploadFile(string photo64,string fileFolder,string fileName)
         {
