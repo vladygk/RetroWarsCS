@@ -9,4 +9,6 @@ public class ForumPostViewModel
     public string PostTime { get; set; } = null!;
 
     public string UserName { get; set; } = null!;
+
+    public Guid UserId { get; set; }
 }

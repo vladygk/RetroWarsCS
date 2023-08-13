@@ -1,6 +1,11 @@
 ﻿@model ForumPostViewModel
-
-<div class=" row align-items-center mt-3 w-50 mb-3 border border-2 border-danger" >
+@using RetroWars.Web.Infrastructure.Extensions;
+@{
+    string threadId = (string)ViewData["ForumThreadId"];
+    bool isAdmin = User.IsAdmin();
+    bool isOwner = User.GetId() == Model.UserId.ToString();
+}
+<div class=" row align-items-center mt-3 w-50 mb-3 border border-2 border-danger">
     <div class="col-md-8 mb-3 mb-sm-0">
         <h5 class="text-info">
             @Model.UserName :
@@ -11,4 +16,10 @@
         <div class="text-sm op-6 text-warning">@Model.Content</div>
 
     </div>
+    @if (isAdmin || isOwner)
+    {
+        <div>
+            <a class="btn btn-danger" asp-controller="ForumPost" asp-action="Delete" asp-area="" asp-route-id="@Model.Id" asp-route-threadId="@threadId">Delete</a>
+        </div>
+    }
 </div>

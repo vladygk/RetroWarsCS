@@ -36,4 +36,27 @@ public class ForumPostController : AuthorizationController
         TempData[ErrorMessage] = "Error: Can't add post.";
         return RedirectToAction("All", "ForumThread");
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(string id, string threadId)
+    {
+        try
+        {
+            
+            bool success = await this.forumPostService.DeletePostAsync(id);
+
+            if (success)
+            {
+                TempData[SuccessMessage] = "Success: Post deleted.";
+                return RedirectToAction("Details", "ForumThread", new {id= threadId });
+            }
+            TempData[ErrorMessage] = "Error: Can't delete post, plase try again.";
+            return RedirectToAction("Details", "ForumThread", new { id = threadId });
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Can't delete post, plase try again.";
+            return RedirectToAction("Details", "ForumThread", new { id = threadId });
+        }
+    }
 }

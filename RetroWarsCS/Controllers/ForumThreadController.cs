@@ -94,4 +94,27 @@ public class ForumThreadController : AuthorizationController
         }
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Delete(string id)
+    {
+
+        try
+        {
+            bool success = await this.forumThreadService.DeleteOneAsync(id);
+            if(success)
+            {
+                TempData[SuccessMessage] = "Success: Thread deleted!";
+                return RedirectToAction("All", "ForumThread");
+            }
+
+            TempData[ErrorMessage] = "Error: Can't delete thread, plase try again.";
+            return RedirectToAction("All", "ForumThread");
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Can't delete thread, plase try again.";
+            return RedirectToAction("All", "ForumThread");
+        }
+    }
+
 }

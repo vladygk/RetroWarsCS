@@ -8,10 +8,11 @@ using RetroWars.Web.ViewModels.ForumThread;
 public class ForumThreadService : IForumThreadService
 {
     private readonly IRepository<ForumThread> forumThreadRepository;
-
-    public ForumThreadService(IRepository<ForumThread> forumThreadRepository)
+    private readonly IRepository<ForumPost> forumPostRepository;
+    public ForumThreadService(IRepository<ForumThread> forumThreadRepository, IRepository<ForumPost> forumPostRepository)
     {
         this.forumThreadRepository = forumThreadRepository;
+        this.forumPostRepository = forumPostRepository;
     }
     public async Task<bool> CreateAsync(ForumThreadFormModel model, string userId)
     {
@@ -42,6 +43,13 @@ public class ForumThreadService : IForumThreadService
         {
             return false;
         }
+
+        for (int i = 0; i < thread.ForumPosts.Count; i++)
+        {
+            await this.forumPostRepository.DeleteOneAsync(thread.ForumPosts.ToList()[i].Id);
+        }
+        await this.forumPostRepository.SaveAsync();
+
         await this.forumThreadRepository.DeleteOneAsync(Guid.Parse(id));
         await this.forumThreadRepository.SaveAsync(); 
         return true;
@@ -58,6 +66,7 @@ public class ForumThreadService : IForumThreadService
             Title = t.Title,
             CreatedDateTime = t.CreatedDateTime.ToString("MM/dd/yyyy h:mm tt"),
             UserName =$"{t.User.FirstName} {t.User.LastName}",
+            UserId = t.UserId,
             ForumPostsCount = t.ForumPosts.Count
 
         });
@@ -78,6 +87,7 @@ public class ForumThreadService : IForumThreadService
             Title = thread.Title,
             CreatedDateTime = thread.CreatedDateTime.ToString("MM/dd/yyyy h:mm tt"),
             UserName = $"{thread.User.FirstName} {thread.User.LastName}",
+            UserId = thread.UserId,
             ForumPostsCount = thread.ForumPosts.Count
         };
     }

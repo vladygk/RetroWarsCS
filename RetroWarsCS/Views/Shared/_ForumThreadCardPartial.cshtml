@@ -1,4 +1,9 @@
 ﻿@model ForumThreadViewModel
+@using RetroWars.Web.Infrastructure.Extensions;
+@{
+    bool isAdmin = User.IsAdmin();
+    bool isOwner = User.GetId() == Model.UserId.ToString();
+}
 
 <div class="card row-hover pos-relative bg-secondary py-3 px-3 mb-3 border-top-0 border-right-0 border-bottom-0 rounded-0 border-2" style="border-color:#FF01FF">
     <div class="row align-items-center">
@@ -6,18 +11,22 @@
             <h5 class="text-info">
                 @Model.Title
             </h5>
-            <div class="text-sm"><span class="op-6 text-warning">Posted</span> <p class="text-black" >@Model.CreatedDateTime</p> <span class="op-6"> by</span> <p class="text-black">@Model.UserName</p></div>
-            
+            <div class="text-sm"><span class="op-6 text-warning">Posted</span> <p class="text-black">@Model.CreatedDateTime</p> <span class="op-6"> by</span> <p class="text-black">@Model.UserName</p></div>
+
         </div>
         <div class="col-md-4 op-7">
             <div class="row text-center op-7">
-                
+
                 <div class="col px-1 d-flex"> <i class="ion-ios-chatboxes-outline icon-1x " style="color:#32CD32"></i> <span class="d-block text-sm" style="color:#32CD32">@Model.ForumPostsCount Posts</span> </div>
-                
+
             </div>
         </div>
         <div>
             <a class="btn text-info btn-info" asp-controller="ForumThread" asp-action="Details" asp-area="" asp-route-id="@Model.Id">Review</a>
+            @if (isAdmin || isOwner)
+            {
+                <a class="btn mt-2 text-info btn-danger" asp-controller="ForumThread" asp-action="Delete" asp-area="" asp-route-id="@Model.Id">Delete</a>
+            }
         </div>
     </div>
 </div>

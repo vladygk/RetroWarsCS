@@ -6,6 +6,7 @@
     ViewData["Title"] = Model.ForumThreadViewModel.Title.Substring(0, 10);
     bool isAuthenticated = User.Identity?.IsAuthenticated ?? false;
     ViewData["ForumThreadId"] = Model.ForumThreadViewModel.Id.ToString();
+    
 }
 
 <div class="border w-75 p-3 d-flex flex-column align-items-center" style="height: 85vh">

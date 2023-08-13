@@ -16,6 +16,7 @@ public class ForumThreadViewModel
     public string CreatedDateTime { get; set; } = null!;
 
     public string UserName { get; set; } = null!;
+    public Guid UserId { get; set; }    
 
     public int ForumPostsCount { get; set; }
 

@@ -59,6 +59,7 @@ public class ForumPostService : IForumPostService
             Content = p.Content,
             PostTime = p.PostTime.ToString("MM/dd/yyyy h:mm tt"),
             UserName = $"{p.User.FirstName} {p.User.LastName}",
+            UserId = p.UserId,
         });
     }
 }
