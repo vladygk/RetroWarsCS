@@ -201,6 +201,25 @@ public class GameService : IGameService
         return formModel;
     }
 
+    public async Task<IEnumerable<GameViewModel>> SearchGameByName(string query)
+    {
+        IEnumerable<Game> allGames = await this.gameRepository.GetAllAsync();
+        IEnumerable<Game> filteredGames = allGames.Where(g=>g.Name.ToLower().Contains(query.ToLower()));
 
+        return filteredGames.Select(g => new GameViewModel()
+        {
+            Id = g.Id.ToString(),
+            Name = g.Name,
+            Developer = g.Developer,
+            Publisher = g.Publisher,
+            YearOfPublishing = g.YearOfPublishing,
+            Description = g.Description,
+            ImageUrl = g.ImageUrl,
+            Genre = g.Genre.Name,
+            GenreId = g.GenreId.ToString(),
+            Platform = g.Platform.Name,
+            PlatformId = g.PlatformId.ToString()
+        }).ToList();
+    }
 }
 

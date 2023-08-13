@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<GameViewModel>
 @{
     ViewData["Title"] = "Games All";
+    SearchFormModel searchFormModel = new SearchFormModel();
 }
 
 
@@ -8,6 +9,8 @@
 
     <a class=" text-warning btn btn-secondary m-5" asp-area="" asp-controller="Game" asp-action="Add">Add_Game</a>
     <a class=" text-warning btn btn-danger m-5" asp-area="" asp-controller="Genre" asp-action="Add">Add_Genre</a>
+    <div class="d-flex">@await Html.PartialAsync("_SearchFiledPartial",searchFormModel) <a class="ms-2 btn btn-primary" asp-controller="Game" asp-action="All" asp-area="" asp-route-clear="true"> Clear</a></div>
+
     <div class="row">
 
         @if (Model.Any())

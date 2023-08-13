@@ -19,4 +19,6 @@ public interface IGameService
     public Task<IEnumerable<PollSelectGameViewModel>> GetAllPollSelectGameViewModels();
 
     public GameFormModel ConvertGameViewModelToFormModel(GameViewModel viewModel);
+
+    public Task<IEnumerable<GameViewModel>> SearchGameByName(string query);
 }

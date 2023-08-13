@@ -9,6 +9,7 @@ using static Common.NotificationMessagesConstants;
 using static Common.GeneralApplicationConstants;
 using Ganss.Xss;
 using RetroWars.Web.ViewModels.Poll;
+using RetroWars.Web.ViewModels.Search;
 
 public class GameController : AuthorizationController
 {
@@ -29,17 +30,28 @@ public class GameController : AuthorizationController
     }
 
     [HttpGet]
-    public async Task<IActionResult> All()
+    public async Task<IActionResult> All(string? query, bool clear)
     {
         try
         {
+            if (clear)
+            {
+                this.cache.Remove(GamesCacheKey);
+            }
             IEnumerable<GameViewModel> allGames =
                 this.cache.Get<IEnumerable<GameViewModel>>(GamesCacheKey);
 
             if (allGames is null)
             {
-                allGames = await this.gameService.GetAllGamesAsync();
-
+                TempData["isFilteredGames"] = TempData["isFilteredGames"] ?? false;
+                if ((bool)TempData["isFilteredGames"] && query is not null)
+                {
+                    allGames = await this.gameService.SearchGameByName(query);
+                }
+                else
+                {
+                    allGames = await this.gameService.GetAllGamesAsync();
+                }
                 MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(GamesCacheDurationMinutes));
 
@@ -197,7 +209,7 @@ public class GameController : AuthorizationController
         {
             GameViewModel viewModel = await this.gameService.GetOneGameAsync(id);
 
-        GameFormModel formModel = this.gameService.ConvertGameViewModelToFormModel(viewModel);
+            GameFormModel formModel = this.gameService.ConvertGameViewModelToFormModel(viewModel);
             formModel.Genres = await this.genreService.GetAllGenresAsync();
             formModel.Platforms = await this.platformService.GetAllPlatformsAsync();
             return this.View(formModel);
@@ -279,6 +291,24 @@ public class GameController : AuthorizationController
         {
             TempData[ErrorMessage] = "Error: Couldn't remove from favorite games.";
             return RedirectToAction("All");
+        }
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> Search(SearchFormModel formModel)
+    {
+        try
+        {
+            this.cache.Remove(GamesCacheKey);
+            // IEnumerable<GameViewModel> allGames =  await this.gameService.SearchGameByName(formModel.Query);
+            TempData["isFilteredGames"] = true;
+            return RedirectToAction("All", "Game", new { query = formModel.Query });
+        }
+        catch
+        {
+            TempData[ErrorMessage] = "Error: Couldn't search games.";
+            return RedirectToAction("All", "Game");
         }
     }
 }
