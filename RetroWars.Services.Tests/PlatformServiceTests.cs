@@ -13,6 +13,10 @@ public class PlatformServiceTests
 {
     private IPlatformService platformService;
     private IRepository<Platform> platformMockRepository;
+    private IFileUploadService fileUploadService;
+    private IFireBaseService fireBaseService;
+    private Game game;
+    private IRepository<Game> gameMockRepository;
     private Platform platform;
     private PlatformViewModel platformViewModel;
     private GameSelectPlatformsFormModel gameSelectPlatformsFormModel;
@@ -23,10 +27,13 @@ public class PlatformServiceTests
         this.platform = TestObjectsFactory.CreatePlatform();
         this.platformViewModel = TestObjectsFactory.CreatePlatformViewModel();
         this.gameSelectPlatformsFormModel = TestObjectsFactory.CreateGameSelectPlatformsFormModel();
-
+        this.fileUploadService = MocksFactory.CreateMockFileUploadService();
+        this.fireBaseService = MocksFactory.CreateMockFirebaseService();
         this.platformMockRepository = MocksFactory.CreateMockRepository<Platform>(this.platform);
+        this.game = TestObjectsFactory.CreateGame();
+        this.gameMockRepository = MocksFactory.CreateMockRepository<Game>(this.game);
 
-        this.platformService = new PlatformService(this.platformMockRepository);
+        this.platformService = new PlatformService(this.platformMockRepository, this.fileUploadService, this.fireBaseService, this.gameMockRepository);
     }
 
 

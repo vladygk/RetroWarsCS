@@ -1,0 +1,14 @@
+﻿@model ForumThreadFormModel
+
+@{
+    ViewData["Title"] = "Add ForumThread";
+
+}
+
+<h2>$ Sudo Add a Thread</h2>
+
+@await Html.PartialAsync("_ForumThreadFormPartial", Model)
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

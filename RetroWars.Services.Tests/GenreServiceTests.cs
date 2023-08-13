@@ -15,15 +15,18 @@ public class GenreServiceTests
 {
     private IGenreService genreService;
     private IRepository<Genre> genreMockRepository;
+    private IRepository<Game> gameMockRepository;
     private Genre genre;
+    private Game game;
     private GameSelectGenreFormModel gameSelectGenreFormModel;
     [SetUp]
     public void Setup()
     {
         this.genre = TestObjectsFactory.CreateGenre();
-
+        this.game = TestObjectsFactory.CreateGame();
         this.genreMockRepository = MocksFactory.CreateMockRepository<Genre>(this.genre);
-        this.genreService = new GenreService(this.genreMockRepository);
+        this.gameMockRepository = MocksFactory.CreateMockRepository<Game>(this.game);
+        this.genreService = new GenreService(this.genreMockRepository, this.gameMockRepository);
         this.gameSelectGenreFormModel = TestObjectsFactory.CreateGameSelectGenreFormModel();
 
 

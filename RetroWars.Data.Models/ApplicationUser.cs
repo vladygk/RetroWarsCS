@@ -13,6 +13,9 @@ public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
         this.Id = Guid.NewGuid();
 
         this.FavoriteGames = new HashSet<Game>();
+        this.Polls = new HashSet<Poll>();
+        this.ForumPosts = new HashSet<ForumPost>();
+        this.ForumThreads = new HashSet<ForumThread>();
     }
 
     [Required]
@@ -26,5 +29,9 @@ public class ApplicationUser : IdentityUser<Guid>, IBaseEntity
     public virtual ICollection<Game> FavoriteGames { get; set; }
 
     public virtual ICollection<Poll> Polls { get; set; }
+
+    public virtual ICollection<ForumPost> ForumPosts { get; set; }
+
+    public virtual ICollection<ForumThread> ForumThreads { get; set; }
 }
 

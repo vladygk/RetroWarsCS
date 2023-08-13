@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RetroWars.Data;
 
@@ -11,9 +12,10 @@ using RetroWars.Data;
 namespace RetroWars.Data.Migrations
 {
     [DbContext(typeof(RetroWarsDbContext))]
-    partial class RetroWarsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230806181916_Add many-to-many between ApplicationUsers and Games")]
+    partial class AddmanytomanybetweenApplicationUsersandGames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,21 +37,6 @@ namespace RetroWars.Data.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("ApplicationUserGame");
-                });
-
-            modelBuilder.Entity("ApplicationUserPoll", b =>
-                {
-                    b.Property<Guid>("PollsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VotersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("PollsId", "VotersId");
-
-                    b.HasIndex("VotersId");
-
-                    b.ToTable("ApplicationUserPoll");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -267,59 +254,6 @@ namespace RetroWars.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("RetroWars.Data.Models.ForumPost", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<Guid>("ForumThreadId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("PostTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ForumThreadId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ForumPosts");
-                });
-
-            modelBuilder.Entity("RetroWars.Data.Models.ForumThread", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ForumThreads");
-                });
-
             modelBuilder.Entity("RetroWars.Data.Models.Game", b =>
                 {
                     b.Property<Guid>("Id")
@@ -403,8 +337,8 @@ namespace RetroWars.Data.Migrations
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -466,21 +400,6 @@ namespace RetroWars.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ApplicationUserPoll", b =>
-                {
-                    b.HasOne("RetroWars.Data.Models.Poll", null)
-                        .WithMany()
-                        .HasForeignKey("PollsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RetroWars.Data.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("VotersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -532,36 +451,6 @@ namespace RetroWars.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RetroWars.Data.Models.ForumPost", b =>
-                {
-                    b.HasOne("RetroWars.Data.Models.ForumThread", "ForumThread")
-                        .WithMany("ForumPosts")
-                        .HasForeignKey("ForumThreadId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("RetroWars.Data.Models.ApplicationUser", "User")
-                        .WithMany("ForumPosts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ForumThread");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RetroWars.Data.Models.ForumThread", b =>
-                {
-                    b.HasOne("RetroWars.Data.Models.ApplicationUser", "User")
-                        .WithMany("ForumThreads")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RetroWars.Data.Models.Game", b =>
                 {
                     b.HasOne("RetroWars.Data.Models.Genre", "Genre")
@@ -598,18 +487,6 @@ namespace RetroWars.Data.Migrations
                     b.Navigation("FirstGame");
 
                     b.Navigation("SecondGame");
-                });
-
-            modelBuilder.Entity("RetroWars.Data.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("ForumPosts");
-
-                    b.Navigation("ForumThreads");
-                });
-
-            modelBuilder.Entity("RetroWars.Data.Models.ForumThread", b =>
-                {
-                    b.Navigation("ForumPosts");
                 });
 
             modelBuilder.Entity("RetroWars.Data.Models.Game", b =>

@@ -1,0 +1,14 @@
+﻿@model ForumPostViewModel
+
+<div class=" row align-items-center mt-3 w-50 mb-3 border border-2 border-danger" >
+    <div class="col-md-8 mb-3 mb-sm-0">
+        <h5 class="text-info">
+            @Model.UserName :
+        </h5>
+        <h5 class="text-info">
+            At: @Model.PostTime
+        </h5>
+        <div class="text-sm op-6 text-warning">@Model.Content</div>
+
+    </div>
+</div>

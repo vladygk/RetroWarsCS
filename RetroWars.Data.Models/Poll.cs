@@ -28,9 +28,11 @@ public class Poll : IBaseEntity
 
     public virtual Game SecondGame { get; set; }
 
-    [Required] public int VotesForFirst { get; set; }
+    [Required] 
+    public int VotesForFirst { get; set; }
 
-    [Required] public int VotesForSecond { get; set; }
+    [Required] 
+    public int VotesForSecond { get; set; }
 
     public virtual ICollection<ApplicationUser> Voters { get; set; }
 }

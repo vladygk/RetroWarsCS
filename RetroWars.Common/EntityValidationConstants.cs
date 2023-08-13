@@ -59,6 +59,16 @@
             public const int MaxPasswordLength = 100;
         }
 
+        public static class ForumPost {
+            public const int MaxContentLength = 500;
+            public const int MinContentLenght = 10;
+        }
+        public static class ForumThread
+        {
+            public const int MaxTitleLength = 60;
+            public const int MinTitleLenght = 5;
+        }
+
 
     }
 }

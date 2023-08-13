@@ -1,0 +1,15 @@
+﻿@model ForumPostFormModel
+@{
+    string threadId =(string) ViewData["ForumThreadId"];
+}
+<form method="post" asp-controller="ForumPost" asp-action="Add">
+    <div class="form-outline form-white mb-4">
+        <label asp-for="Content" class="form-label" for="typeNameX">Add Post:</label>
+        <input placeholder="Enter your post..." asp-for="Content" type="text" class="form-control form-control-lg" />
+        <span asp-validation-for="Content" class="text-danger"></span>
+        <input  asp-for="ForumThreadId" type="hidden" value="@threadId" class="form-control form-control-lg" />
+    </div>
+
+    <button type="submit" class="btn btn-warning btn-lg px-5" >Add Post!</button>
+
+</form>

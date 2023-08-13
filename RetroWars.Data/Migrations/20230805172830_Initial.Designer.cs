@@ -12,7 +12,7 @@ using RetroWars.Data;
 namespace RetroWars.Data.Migrations
 {
     [DbContext(typeof(RetroWarsDbContext))]
-    [Migration("20230812214934_Initial")]
+    [Migration("20230805172830_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,34 +24,19 @@ namespace RetroWars.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ApplicationUserGame", b =>
+            modelBuilder.Entity("GamePlatform", b =>
                 {
-                    b.Property<Guid>("FavoriteGamesId")
+                    b.Property<Guid>("GamesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UsersId")
+                    b.Property<Guid>("PlatformsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("FavoriteGamesId", "UsersId");
+                    b.HasKey("GamesId", "PlatformsId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("PlatformsId");
 
-                    b.ToTable("ApplicationUserGame");
-                });
-
-            modelBuilder.Entity("ApplicationUserPoll", b =>
-                {
-                    b.Property<Guid>("PollsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("VotersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("PollsId", "VotersId");
-
-                    b.HasIndex("VotersId");
-
-                    b.ToTable("ApplicationUserPoll");
+                    b.ToTable("GamePlatform");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -275,6 +260,9 @@ namespace RetroWars.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -290,16 +278,13 @@ namespace RetroWars.Data.Migrations
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid>("PlatformId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Publisher")
                         .IsRequired()
@@ -311,9 +296,9 @@ namespace RetroWars.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GenreId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("PlatformId");
+                    b.HasIndex("GenreId");
 
                     b.ToTable("Games");
                 });
@@ -400,32 +385,17 @@ namespace RetroWars.Data.Migrations
                     b.ToTable("Polls");
                 });
 
-            modelBuilder.Entity("ApplicationUserGame", b =>
+            modelBuilder.Entity("GamePlatform", b =>
                 {
                     b.HasOne("RetroWars.Data.Models.Game", null)
                         .WithMany()
-                        .HasForeignKey("FavoriteGamesId")
+                        .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RetroWars.Data.Models.ApplicationUser", null)
+                    b.HasOne("RetroWars.Data.Models.Platform", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ApplicationUserPoll", b =>
-                {
-                    b.HasOne("RetroWars.Data.Models.Poll", null)
-                        .WithMany()
-                        .HasForeignKey("PollsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RetroWars.Data.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("VotersId")
+                        .HasForeignKey("PlatformsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -483,21 +453,17 @@ namespace RetroWars.Data.Migrations
 
             modelBuilder.Entity("RetroWars.Data.Models.Game", b =>
                 {
+                    b.HasOne("RetroWars.Data.Models.ApplicationUser", null)
+                        .WithMany("FavoriteGames")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("RetroWars.Data.Models.Genre", "Genre")
                         .WithMany("Games")
                         .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("RetroWars.Data.Models.Platform", "Platform")
-                        .WithMany("Games")
-                        .HasForeignKey("PlatformId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Genre");
-
-                    b.Navigation("Platform");
                 });
 
             modelBuilder.Entity("RetroWars.Data.Models.Poll", b =>
@@ -519,6 +485,11 @@ namespace RetroWars.Data.Migrations
                     b.Navigation("SecondGame");
                 });
 
+            modelBuilder.Entity("RetroWars.Data.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("FavoriteGames");
+                });
+
             modelBuilder.Entity("RetroWars.Data.Models.Game", b =>
                 {
                     b.Navigation("PollsAsFirstParticipant");
@@ -527,11 +498,6 @@ namespace RetroWars.Data.Migrations
                 });
 
             modelBuilder.Entity("RetroWars.Data.Models.Genre", b =>
-                {
-                    b.Navigation("Games");
-                });
-
-            modelBuilder.Entity("RetroWars.Data.Models.Platform", b =>
                 {
                     b.Navigation("Games");
                 });
