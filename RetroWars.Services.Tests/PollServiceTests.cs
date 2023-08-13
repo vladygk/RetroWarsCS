@@ -1,7 +1,7 @@
 ﻿using RetroWars.Services.Tests.Utils;
 
 namespace RetroWars.Services.Tests;
-using Retrowars.Data.Repository;
+using RetroWars.Data.Repository;
 using RetroWars.Common.Enums;
 using RetroWars.Data.Models;
 using RetroWars.Services.Data;

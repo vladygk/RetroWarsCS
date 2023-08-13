@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RetroWars.Data;
 
-namespace Retrowars.Data.Repository
+namespace RetroWars.Data.Repository
 {
     public class Repository<T> : IRepository<T> where T : class, IBaseEntity
     {

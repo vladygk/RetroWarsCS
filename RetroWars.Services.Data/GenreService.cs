@@ -1,7 +1,7 @@
 ﻿namespace RetroWars.Services.Data;
 
 using RetroWars.Data.Models;
-using Retrowars.Data.Repository;
+using RetroWars.Data.Repository;
 using Contracts;
 using Web.ViewModels.Genre;
 

@@ -3,7 +3,7 @@ namespace RetroWars.Services.Data;
 using RetroWars.Web.App.Areas.Admin.ViewModels;
 using Common.Enums;
 using RetroWars.Data.Models;
-using Retrowars.Data.Repository;
+using RetroWars.Data.Repository;
 using Contracts;
 using Web.ViewModels.Poll;
 

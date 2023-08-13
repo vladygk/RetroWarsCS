@@ -1,4 +1,4 @@
-﻿using Retrowars.Data.Repository;
+﻿using RetroWars.Data.Repository;
 
 namespace RetroWars.Data.Models;
 

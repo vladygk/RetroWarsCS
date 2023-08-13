@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using RetroWars.Data.Models;
-using Retrowars.Data.Repository;
+using RetroWars.Data.Repository;
 namespace RetroWars.Services.Data;
 
 using Contracts;

@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 using Moq;
-using Retrowars.Data.Repository;
+using RetroWars.Data.Repository;
 using RetroWars.Services.Data.Contracts;
 using RetroWars.Web.ViewModels.Game;
 using RetroWars.Web.ViewModels.User;

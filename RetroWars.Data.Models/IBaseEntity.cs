@@ -1,4 +1,4 @@
-﻿namespace Retrowars.Data.Repository
+﻿namespace RetroWars.Data.Repository
 {
     public interface IBaseEntity
     {

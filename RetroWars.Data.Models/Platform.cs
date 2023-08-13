@@ -1,6 +1,6 @@
 ﻿namespace RetroWars.Data.Models;
 
-using Retrowars.Data.Repository;
+using RetroWars.Data.Repository;
 using System.ComponentModel.DataAnnotations;
 using static RetroWars.Common.EntityValidationConstants.Platform;
 

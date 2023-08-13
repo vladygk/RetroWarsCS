@@ -3,7 +3,7 @@ namespace RetroWars.Web.App;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Retrowars.Data.Repository;
+using RetroWars.Data.Repository;
 using Data;
 using Data.Models;
 using RetroWars.Services.Data.Contracts;

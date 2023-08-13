@@ -1,6 +1,6 @@
 ﻿
 
-using Retrowars.Data.Repository;
+using RetroWars.Data.Repository;
 using RetroWars.Data.Models;
 using RetroWars.Services.Data;
 using RetroWars.Services.Data.Contracts;
