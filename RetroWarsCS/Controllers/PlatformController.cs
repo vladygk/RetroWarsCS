@@ -47,17 +47,23 @@ public class PlatformController : AuthorizationController
     [HttpPost]
     public async Task<IActionResult> Add(PlatformFormModel model)
     {
-     bool success =  await this.platformService.CreatePlatformAsync(model);
+        if (ModelState.IsValid)
+        {
+            bool success = await this.platformService.CreatePlatformAsync(model);
 
-        if (success)
-        {
-            TempData[SuccessMessage] = "Success: Platfrom added!";
-            return RedirectToAction("All", "Platform");
-        }else
-        {
-            TempData[ErrorMessage] = "Error: Can't add platform, plase try again.";
-            return RedirectToAction("All", "Platform");
+            if (success)
+            {
+                TempData[SuccessMessage] = "Success: Platfrom added!";
+                return RedirectToAction("All", "Platform");
+            }
+            else
+            {
+                TempData[ErrorMessage] = "Error: Can't add platform, plase try again.";
+                return RedirectToAction("All", "Platform");
+            }
         }
+        TempData[ErrorMessage] = "Error: Invalid model";
+        return RedirectToAction("All", "Platform");
     }
 
     [HttpGet]

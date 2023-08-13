@@ -1,0 +1,11 @@
+﻿@model IEnumerable<GenreAdminViewModel>
+@{
+    ViewData["Title"] = "Genres - Admin Dashboard";
+
+}
+
+<div class="d-flex justify-content-center align-items-center flex-column">
+    <div><h1>Genres - Admin Dashboard</h1></div>
+    <br />
+    <div>@await Html.PartialAsync("_GenreTablePartial",Model)</div>
+</div>

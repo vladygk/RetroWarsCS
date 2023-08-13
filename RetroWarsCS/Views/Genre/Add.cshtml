@@ -1,0 +1,14 @@
+﻿@model PlatformFormModel
+
+@{
+    ViewData["Title"] = "Add Genre";
+    
+}
+
+<h2>$ Sudo Add a Genre</h2>
+
+@await Html.PartialAsync("_GenreFormPartial", Model)
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
