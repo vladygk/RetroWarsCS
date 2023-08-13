@@ -23,7 +23,7 @@ public class Program
             options.UseSqlServer(connectionString)
                 .UseLazyLoadingProxies());
 
-        builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); //Add repository to IoC
+        builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); 
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -54,7 +54,7 @@ public class Program
         builder.Services.ConfigureApplicationCookie(cfg =>
         {
             cfg.LoginPath = "/User/Login";
-            cfg.AccessDeniedPath = "/Home/Error/401";
+            cfg.AccessDeniedPath = "/Home/Error401";
         });
 
 
@@ -68,18 +68,18 @@ public class Program
 
         var app = builder.Build();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseMigrationsEndPoint();
-            app.UseDeveloperExceptionPage();
-        }
-        else
-        {
+        //if (app.Environment.IsDevelopment())
+        //{
+        //    app.UseMigrationsEndPoint();
+        //    app.UseDeveloperExceptionPage();
+        //}
+        //else
+        //{
             app.UseExceptionHandler("/Home/Error/500");
             app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
 
             app.UseHsts();
-        }
+        //}
 
 
 

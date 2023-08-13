@@ -5,15 +5,29 @@ using Microsoft.AspNetCore.Mvc;
 
 public class HomeController : Controller
 {
-
+    [HttpGet]
     public IActionResult Index()
     {
         return View();
     }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    [HttpGet]
+   
     public IActionResult Error(int statusCode)
     {
+        if(statusCode == 404)
+        {
+            return View("Error404");
+
+        }
+
+
         return View();
     }
+    [HttpGet]
+    public IActionResult Error401()
+    {
+        
+        return View();
+    }
+
 }
