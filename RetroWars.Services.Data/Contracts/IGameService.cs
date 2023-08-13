@@ -17,4 +17,6 @@ public interface IGameService
     public Task<IEnumerable<GameViewModel>> GetFavoritesAsync(string userId);
 
     public Task<IEnumerable<PollSelectGameViewModel>> GetAllPollSelectGameViewModels();
+
+    public GameFormModel ConvertGameViewModelToFormModel(GameViewModel viewModel);
 }

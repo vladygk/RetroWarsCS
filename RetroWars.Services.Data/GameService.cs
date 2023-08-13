@@ -183,6 +183,24 @@ public class GameService : IGameService
         return models;
     }
 
+    public GameFormModel ConvertGameViewModelToFormModel(GameViewModel viewModel)
+    {
+        GameFormModel formModel = new GameFormModel()
+        {
+
+            Name = viewModel.Name,
+            Description = viewModel.Description,
+            Developer = viewModel.Developer,
+            Publisher = viewModel.Publisher,
+            YearOfPublishing = viewModel.YearOfPublishing,
+            GenreId = Guid.Parse(viewModel.GenreId),
+            PlatformId = Guid.Parse(viewModel.PlatformId),
+            
+        };
+
+        return formModel;
+    }
+
 
 }
 

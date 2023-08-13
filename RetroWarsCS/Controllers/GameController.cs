@@ -46,7 +46,7 @@ public class GameController : AuthorizationController
                 this.cache.Set(GamesCacheKey, allGames, cacheOptions);
             }
 
-           
+
             return this.View(allGames);
         }
         catch
@@ -85,7 +85,7 @@ public class GameController : AuthorizationController
 
             if (ModelState.IsValid)
             {
-              bool success =  await this.gameService.CreateGameAsync(formModel);
+                bool success = await this.gameService.CreateGameAsync(formModel);
                 if (success)
                 {
                     TempData[SuccessMessage] = "Success: Game added!";
@@ -115,7 +115,7 @@ public class GameController : AuthorizationController
             formModel.Genres = await this.genreService.GetAllGenresAsync();
             return this.View(formModel);
         }
-       
+
 
 
     }
@@ -142,19 +142,10 @@ public class GameController : AuthorizationController
         {
             GameViewModel viewModel = await this.gameService.GetOneGameAsync(id);
 
-            GameFormModel formModel = new GameFormModel()
-            {
+            GameFormModel formModel = this.gameService.ConvertGameViewModelToFormModel(viewModel);
 
-                Name = viewModel.Name,
-                Description = viewModel.Description,
-                Developer = viewModel.Developer,
-                Publisher = viewModel.Publisher,
-                YearOfPublishing = viewModel.YearOfPublishing,
-                GenreId = Guid.Parse(viewModel.GenreId),
-                PlatformId = Guid.Parse(viewModel.PlatformId),
-                Platforms = await this.platformService.GetAllPlatformsAsync(),
-                Genres = await this.genreService.GetAllGenresAsync()
-            };
+            formModel.Platforms = await this.platformService.GetAllPlatformsAsync();
+            formModel.Genres = await this.genreService.GetAllGenresAsync();
 
             return this.View(formModel);
         }
@@ -174,7 +165,7 @@ public class GameController : AuthorizationController
             this.cache.Remove(GamesCacheKey);
             if (ModelState.IsValid)
             {
-             bool success =    await this.gameService.EditGameAsync(id, formModel);
+                bool success = await this.gameService.EditGameAsync(id, formModel);
                 if (success)
                 {
                     TempData[SuccessMessage] = "Success: Game edited.";
@@ -206,20 +197,9 @@ public class GameController : AuthorizationController
         {
             GameViewModel viewModel = await this.gameService.GetOneGameAsync(id);
 
-            GameFormModel formModel = new GameFormModel()
-            {
-
-                Name = viewModel.Name,
-                Description = viewModel.Description,
-                Developer = viewModel.Developer,
-                Publisher = viewModel.Publisher,
-                YearOfPublishing = viewModel.YearOfPublishing,
-                GenreId = Guid.Parse(viewModel.GenreId),
-                PlatformId = Guid.Parse(viewModel.PlatformId),
-                Platforms = await this.platformService.GetAllPlatformsAsync(),
-                Genres = await this.genreService.GetAllGenresAsync()
-            };
-
+        GameFormModel formModel = this.gameService.ConvertGameViewModelToFormModel(viewModel);
+            formModel.Genres = await this.genreService.GetAllGenresAsync();
+            formModel.Platforms = await this.platformService.GetAllPlatformsAsync();
             return this.View(formModel);
         }
         catch
@@ -233,17 +213,18 @@ public class GameController : AuthorizationController
     public async Task<IActionResult> Delete(string id, bool other = true)
     {
         IEnumerable<PollViewModel> polls = await this.pollService.GetAllPollsAsync();
-        if (polls.Any(p => (p.FirstGameId == Guid.Parse(id)) || (p.SecondGameId == Guid.Parse(id)))){
+        if (polls.Any(p => (p.FirstGameId == Guid.Parse(id)) || (p.SecondGameId == Guid.Parse(id))))
+        {
             TempData[ErrorMessage] = "Error: Can't delete game, it's part of a poll";
             return RedirectToAction("All");
         }
 
         try
         {
-            bool success =  await this.gameService.DeleteGameAsync(id);
+            bool success = await this.gameService.DeleteGameAsync(id);
             this.cache.Remove(GamesCacheKey);
 
-            if(success)
+            if (success)
             {
                 TempData[SuccessMessage] = "Success: Game deleted";
                 return RedirectToAction("All");
