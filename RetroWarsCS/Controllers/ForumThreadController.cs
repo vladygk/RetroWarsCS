@@ -28,10 +28,11 @@ public class ForumThreadController : AuthorizationController
         {
             var threads = await this.forumThreadService.GetAllAsync();
 
+            var orderedThreads = threads.OrderByDescending(t => t.CreatedDateTime);
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 
-            return this.View(threads.ToPagedList(pageNumber, pageSize));
+            return this.View(orderedThreads.ToPagedList(pageNumber, pageSize));
         }
         catch
         {
@@ -72,12 +73,13 @@ public class ForumThreadController : AuthorizationController
             ForumThreadViewModel viewModel =  await this.forumThreadService.GetOneAsync(id);
 
             viewModel.ForumPosts = await this.forumPostService.GetAllPostsAsync(id);
+
             int pageSize = 5;
             int pageNumber = (page ?? 1);
 
-            viewModel.ForumPostsPaged = viewModel.ForumPosts.ToPagedList(pageNumber,pageSize);
+            viewModel.ForumPostsPaged = viewModel.ForumPosts.OrderBy(fp=>fp.PostTime).ToPagedList(pageNumber,pageSize);
 
-            viewModel.ForumPosts = viewModel.ForumPosts.ToPagedList(pageNumber, pageSize);
+            viewModel.ForumPosts = viewModel.ForumPosts.OrderBy(fp=>fp.PostTime).ToPagedList(pageNumber, pageSize);
 
             DetailsPageWrapperViewModel wrapper = new DetailsPageWrapperViewModel()
             {

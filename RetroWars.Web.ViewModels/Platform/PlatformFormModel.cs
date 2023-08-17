@@ -12,7 +12,7 @@ public class PlatformFormModel
     [Required]
     public IFormFile? File { get; set; }
 
-    public string ImageUrl { get; set; } = null!;
+    
 
     [Required]
     [StringLength(MaxCompanyNameLength, MinimumLength =MinCompanyNameLength)]
