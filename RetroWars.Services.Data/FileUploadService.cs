@@ -17,8 +17,9 @@ public class FileUploadService : IFileUploadService
 
     public async Task<string> UploadFile(IFormFile? file)
     {
-        if (file is  null) { 
-        return String.Empty;
+        if (file is null)
+        {
+            return String.Empty;
         }
         string path = String.Empty;
 

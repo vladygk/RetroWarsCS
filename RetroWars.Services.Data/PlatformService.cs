@@ -41,6 +41,8 @@ public class PlatformService : IPlatformService
 
             await this.platformRepository.AddAsync(platform);
             await this.platformRepository.SaveAsync();
+
+            File.Delete(path);
             return true;
         }
         catch
