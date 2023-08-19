@@ -173,7 +173,7 @@ public class PollServiceTests
     public void GetResultsWorksCorrectlyWithNonZeroVotes()
     {
         // Arrange
-        double[] expected = new double[] { 1, 0 };
+        double[] expected = new double[] { 100, 0 };
 
         // Act
         double[] actual = this.pollService.GetResults(1, this.pollViewModel.VotesForSecond);
